@@ -1,5 +1,50 @@
 import java.util.*;
 
+class Vehicle{
+
+	String VehicleType;
+	String VehicleNumber;
+	Boolean EV;
+	Boolean ChargeRequired;
+    
+	Vehicle(String VehicleType, String VehicleNumber, Boolean EV){
+		this.VehicleType = VehicleType;
+		this.VehicleNumber = VehicleNumber;
+		this.EV=EV;
+	}
+
+
+	void getChargeRequired(Boolean ChargeRequired){
+		this.ChargeRequired = ChargeRequired;
+	}
+
+
+	public static String Vehicle_number_in_Capitals(String VehicleNumber){
+		int i=0;
+        String str="";
+		while(i<VehicleNumber.length()){
+			if(VehicleNumber.charAt(i)<123 && VehicleNumber.charAt(i)>96){
+				str = str + (VehicleNumber.charAt(i)-32);
+			}
+			else{
+				str = str + (VehicleNumber.charAt(i));
+			}
+		}
+        return str;
+	}
+
+
+	void TicketGeneration(String VehicleType, String VehicleNumber, Boolean EV){
+
+        String EV_Yes_No = (EV)?("YES"):("NO");
+
+		System.out.println("Ticket is Generated");
+		System.out.println("Vehicle Type: "+ VehicleType);
+		System.out.println("Vehicle Number: "+ Vehicle_number_in_Capitals(VehicleNumber));
+		System.out.println("EV Type: "+ EV_Yes_No);
+	}
+}
+
 abstract class Floor{
     int current_capacity;
     int max_capacity;
