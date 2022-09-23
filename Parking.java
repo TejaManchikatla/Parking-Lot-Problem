@@ -81,8 +81,20 @@ class Ground_Floor extends Floor{
         System.out.println("No. of 4W EV slots available: " + (max_EV_4_Wheelers-EV_4_wheelers));
         System.out.println("No. of 2W EV slots available: " + (max_EV_2_Wheelers-EV_2_wheelers));
     }
-    void exit(){};
-    void payment(){};
+     void exit(Vehicle v){
+        int rate= payment(v);
+        this.current_capacity--;
+        if (v.VehicleType=="Two_Wheeler"){
+            this.two_wheelers--;
+        }
+        else{
+            this.four_wheelers--;
+        }
+        if(v.Handicapped){
+            handicapped_vehicles--;
+        }
+    };
+    int payment(Vehicle v){};
     void update(){};
 }
 
@@ -105,8 +117,26 @@ class Normal_Floor extends Floor{
         System.out.println("Total Empty Large 4W Slots: " + (this.max_large_4_wheelers - this.large_4_wheelers));
         System.out.println("Total Empty 2W Slots: " + (this.max_two_wheelers - this.two_wheelers));
     }
-    void exit(){};
-    void payment(){};
+    void exit(Vehicle v){
+        int rate= payment(v);
+        this.current_capacity--;
+        if (v.VehicleType=="Two_Wheeler"){
+            this.two_wheelers--;
+        }
+        else{
+            this.four_wheelers--;
+        }
+        if(v.VehicleType=="Compact_4_W"){
+            this.compact_4_wheelers--;
+        }
+        else if (v.VehicleType=="Normal_4_W"){
+           this.normal_4_wheelers-; 
+        }
+        else{
+            this.large_4_wheelers--;
+        }
+     }
+    int payment(Vehicle v){};
     void update(){};
     
 }
