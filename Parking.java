@@ -2,25 +2,15 @@ import java.util.*;
 import java.lang.*;
 import java.time.format.DateTimeFormatter;  
 import java.time.LocalDateTime; 
-class EV{
-	static int EVCharge(String VehicleNumber,boolean ChargeRequired) {
-		if(ChargeRequired==true) {
-			Scanner scn = new Scanner(System.in);
-			System.out.println("Watts used by "+VehicleNumber+": ");
-			int Watts = scn.nextInt();
-			return 10*Watts;
-		}
-		return 0;
-	}
-}
 
 
 abstract class Vehicle{
 
+    String Vehicle_Type;
     String VehicleNumber;
-	  Boolean EV;
-	  Boolean ChargeRequired;
-    Boolean Handicapped;
+	boolean EV;
+	boolean ChargeRequired;
+    boolean Handicapped;
 
 }
 
@@ -80,8 +70,8 @@ abstract class Floor{
     int max_two_wheelers;
 
     abstract void display_board(); // displays the no of empty slots for parking in order of (total, 4w, 2w)
-    abstract void exit(); // does all the functions when a vehicle exits
-    abstract void payment(); // gives price for parking
+    abstract void exit(Vehicle v); // does all the functions when a vehicle exits
+    abstract int payment(Vehicle v); // gives price for parking
     abstract void update(); // updates the counter of vehicle that exits/enters
 }
 
@@ -104,7 +94,7 @@ class Ground_Floor extends Floor{
      void exit(Vehicle v){
         int rate= payment(v);
         this.current_capacity--;
-        if (v.VehicleType=="Two_Wheeler"){
+        if (v.Vehicle_Type=="Two_Wheeler"){
             this.two_wheelers--;
         }
         else{
@@ -113,9 +103,11 @@ class Ground_Floor extends Floor{
         if(v.Handicapped){
             handicapped_vehicles--;
         }
-    };
-    int payment(Vehicle v){};
-    void update(){};
+    }
+    int payment(Vehicle v){
+        return 0;
+    }
+    void update(){}
 }
 
 class Normal_Floor extends Floor{
@@ -140,23 +132,25 @@ class Normal_Floor extends Floor{
     void exit(Vehicle v){
         int rate= payment(v);
         this.current_capacity--;
-        if (v.VehicleType=="Two_Wheeler"){
+        if (v.Vehicle_Type=="Two_Wheeler"){
             this.two_wheelers--;
         }
         else{
             this.four_wheelers--;
         }
-        if(v.VehicleType=="Compact_4_W"){
+        if(v.Vehicle_Type=="Compact_4_W"){
             this.compact_4_wheelers--;
         }
-        else if (v.VehicleType=="Normal_4_W"){
-           this.normal_4_wheelers-; 
+        else if (v.Vehicle_Type=="Normal_4_W"){
+           this.normal_4_wheelers--; 
         }
         else{
             this.large_4_wheelers--;
         }
      }
-    int payment(Vehicle v){};
+    int payment(Vehicle v){
+        return 0;
+    };
     void update(){};
     
 }
@@ -187,6 +181,8 @@ public class Parking {
 		else chargeRequired = false;
 		System.out.print("3. Are you Handicapped?");
 		Handicapped = sc.nextBoolean();		
+
+        PrintTicket(Vehicle_Number,Vehicle_type, EV, chargeRequired, Handicapped);
 	}
 	
 	static void PrintTicket(String Vehicle_Number,int Vehicle_type, boolean EV, boolean chargeRequired, boolean Handicapped) {
@@ -210,9 +206,9 @@ public class Parking {
 //		if(Vehicle)
 //	}
 	
-    public static void main(String[] args, Normal_Floor[] floors){
+    public static void main(String[] args){
     	Scanner sc = new Scanner(System.in);
-        int i, Vehicle_type = 0, floor;
+        int i, Vehicle_type = 0, floor=0;
         boolean EV = false, chargeRequired = false, Handicapped = false;
         String Vehicle_Number = null;
         
@@ -221,10 +217,13 @@ public class Parking {
         LocalDateTime now = LocalDateTime.now();
         System.out.println(dtf.format(now));  
         // array to store the objects of normal-floors
-        Normal_Floor[] floors1 = new Normal_Floor[5]; //building of 1 ground and 5 normal floors
+        Normal_Floor[] floors = new Normal_Floor[5]; //building of 1 ground and 5 normal floors
 
         // object for ground floor
         Ground_Floor ground = new Ground_Floor();
+
+        //object for vehicle
+        Two_Wheeler v = new Two_Wheeler("ad", false, true, false);
 
         //Initializing things for each floor(creating objects of floors)
         for(i=0; i<5; i++) floors[i] = new Normal_Floor();
@@ -257,7 +256,8 @@ public class Parking {
         	floor = sc.nextInt();
         	
         }
-        PrintTicket(Vehicle_Number,Vehicle_type, EV, chargeRequired, Handicapped);
+        
+
         
         
        
