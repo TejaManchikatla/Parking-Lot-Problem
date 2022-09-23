@@ -2,16 +2,19 @@ import java.util.*;
 import java.lang.*;
 import java.time.format.DateTimeFormatter;  
 import java.time.LocalDateTime; 
+
+
 abstract class Vehicle{
 
     String VehicleNumber;
-	Boolean EV;
-	Boolean ChargeRequired;
+	  Boolean EV;
+	  Boolean ChargeRequired;
     Boolean Handicapped;
 
 }
 
 class Two_Wheeler extends Vehicle{
+
 
     Two_Wheeler(String VehicleNumber, boolean EV,boolean ChargeRequired, boolean Handicapped){
         this.VehicleNumber = VehicleNumber;
@@ -23,7 +26,9 @@ class Two_Wheeler extends Vehicle{
 
 class Compact_4_W extends Vehicle{
 
+
     Compact_4_W(String VehicleNumber, boolean EV,boolean ChargeRequired, boolean Handicapped){
+
         this.VehicleNumber = VehicleNumber;
 	    this.EV = EV;
 	    this.ChargeRequired = ChargeRequired;
@@ -32,6 +37,7 @@ class Compact_4_W extends Vehicle{
 }
 
 class Normal_4_W extends Vehicle{
+
 
     Normal_4_W(String VehicleNumber, boolean EV,boolean ChargeRequired, boolean Handicapped){
         this.VehicleNumber = VehicleNumber;
@@ -50,6 +56,7 @@ class Heavy_4_W extends Vehicle{
         this.Handicapped = Handicapped;
     }
 }
+
 
 
 
@@ -83,8 +90,20 @@ class Ground_Floor extends Floor{
         System.out.println("No. of 4W EV slots available: " + (max_EV_4_Wheelers-EV_4_wheelers));
         System.out.println("No. of 2W EV slots available: " + (max_EV_2_Wheelers-EV_2_wheelers));
     }
-    void exit(){};
-    void payment(){};
+     void exit(Vehicle v){
+        int rate= payment(v);
+        this.current_capacity--;
+        if (v.VehicleType=="Two_Wheeler"){
+            this.two_wheelers--;
+        }
+        else{
+            this.four_wheelers--;
+        }
+        if(v.Handicapped){
+            handicapped_vehicles--;
+        }
+    };
+    int payment(Vehicle v){};
     void update(){};
 }
 
@@ -107,8 +126,26 @@ class Normal_Floor extends Floor{
         System.out.println("Total Empty Large 4W Slots: " + (this.max_large_4_wheelers - this.large_4_wheelers));
         System.out.println("Total Empty 2W Slots: " + (this.max_two_wheelers - this.two_wheelers));
     }
-    void exit(){};
-    void payment(){};
+    void exit(Vehicle v){
+        int rate= payment(v);
+        this.current_capacity--;
+        if (v.VehicleType=="Two_Wheeler"){
+            this.two_wheelers--;
+        }
+        else{
+            this.four_wheelers--;
+        }
+        if(v.VehicleType=="Compact_4_W"){
+            this.compact_4_wheelers--;
+        }
+        else if (v.VehicleType=="Normal_4_W"){
+           this.normal_4_wheelers-; 
+        }
+        else{
+            this.large_4_wheelers--;
+        }
+     }
+    int payment(Vehicle v){};
     void update(){};
     
 }
@@ -179,7 +216,7 @@ public class Parking {
         Ground_Floor ground = new Ground_Floor();
 
         //Initializing things for each floor(creating objects of floors)
-        for(i=0; i<5; i++) floors1[i] = new Normal_Floor();
+        for(i=0; i<5; i++) floors[i] = new Normal_Floor();
 
         //displaying ground-floor data
         System.out.println("-----  Ground Floor   -----");
@@ -188,7 +225,8 @@ public class Parking {
         //running a loop to check data on every floor
         for(i=0; i<5; i++){
             System.out.println("-----  Floor ("+(i+1)+")   -----"); // prints the floor number
-            floors1[i].display_board(); // its data
+
+            floors[i].display_board(); // its data
         } 
         /*
         Compact_4_W c1 = new Compact_4_W("Sdf", true, true, false);
@@ -202,7 +240,7 @@ public class Parking {
         else {
         	for(i=0; i<5; i++){
                 System.out.println("-----  Floor ("+(i+1)+")   -----"); // prints the floor number
-                floors1[i].display_board(); // its data
+                floors[i].display_board(); // its data
             } 
         	System.out.print("Which Floor?");
         	floor = sc.nextInt();
@@ -211,6 +249,6 @@ public class Parking {
         PrintTicket(Vehicle_Number,Vehicle_type, EV, chargeRequired, Handicapped);
         
         
-        
+       
     }
 }
