@@ -2,6 +2,17 @@ import java.util.*;
 import java.lang.*;
 import java.time.format.DateTimeFormatter;  
 import java.time.LocalDateTime; 
+class EV{
+	static int EVCharge(String VehicleNumber,boolean ChargeRequired) {
+		if(ChargeRequired==true) {
+			Scanner scn = new Scanner(System.in);
+			System.out.println("Watts used by "+VehicleNumber+": ");
+			int Watts = scn.nextInt();
+			return 10*Watts;
+		}
+		return 0;
+	}
+}
 
 
 abstract class Vehicle{
