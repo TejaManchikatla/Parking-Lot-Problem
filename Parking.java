@@ -105,10 +105,10 @@ class Ground_Floor extends Floor{
         int rate= payment(v);
         this.current_capacity--;
         if (v.Vehicle_Type=="Two_Wheeler"){
-            this.two_wheelers--;
+            this.EV_2_wheelers--;
         }
         else{
-            this.four_wheelers--;
+            this.EV_4_wheelers--;
         }
         if(v.Handicapped){
             handicapped_vehicles--;
@@ -146,9 +146,7 @@ class Normal_Floor extends Floor{
             this.two_wheelers--;
         }
         else{
-            this.four_wheelers--;
-        }
-        if(v.Vehicle_Type=="Compact_4_W"){
+            if(v.Vehicle_Type=="Compact_4_W"){
             this.compact_4_wheelers--;
         }
         else if (v.Vehicle_Type=="Normal_4_W"){
@@ -156,6 +154,7 @@ class Normal_Floor extends Floor{
         }
         else{
             this.large_4_wheelers--;
+        }
         }
      }
     int payment(Vehicle v){
