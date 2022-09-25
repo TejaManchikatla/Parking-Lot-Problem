@@ -3,11 +3,8 @@ import java.lang.*;
 import java.text.*;
 // class EV with method EV_Charge to calculate Charging price 
 class EV{
-	static int EV_Charge(String VehicleNumber,boolean ChargeRequired) {
-		if(ChargeRequired==true) {
-			Scanner scn = new Scanner(System.in);
-			System.out.println("Watts used by "+VehicleNumber+": ");
-			int Watts = scn.nextInt();
+	static int EV_Charge(String VehicleNumber,boolean ChargeRequired,int Watts) {
+		if(ChargeRequired) {
 			return 10*Watts;
 		}
 		return 0;
@@ -35,12 +32,12 @@ class checkAvailability{
         return (HanFirst);
     }
     
-    public static boolean checkAvailabilityEV2W(boolean EV2First,boolean EV2Second,boolean EV2Third,boolean EV2Four,boolean EV2Five){
-        return (EV2First | EV2Third | EV2Four | EV2Five | EV2Second);
+    public static boolean checkAvailabilityEV2W(boolean EV2First){
+        return (EV2First);
     }
     
-    public static boolean checkAvailabilityEV4W(boolean EV4First,boolean EV4Second,boolean EV4Third,boolean EV4Four,boolean EV4Five){
-        return (EV4First || EV4Third || EV4Four || EV4Five || EV4Second);
+    public static boolean checkAvailabilityEV4W(boolean EV4First){
+        return (EV4First);
     }
 } 
 
@@ -213,6 +210,7 @@ class Ground_Floor extends Floor{
 
     }
 
+	// returning empty slot positiion
     int EV4PlaceChecking(){
         for(int i=0;i<30;i++){
             if(this.EV4Status[i]==false) {
@@ -223,6 +221,7 @@ class Ground_Floor extends Floor{
         return -1;
     }
     
+	// returning empty slot positiion
     int EV2PlaceChecking(){
         for(int i=0;i<20;i++){
             if(this.EV2Status[i]==false) {
@@ -233,6 +232,7 @@ class Ground_Floor extends Floor{
         return -1;
     }
     
+	// returning empty slot positiion
     int handicappedPlaceChecking(){
         for(int i=0;i<50;i++){
             if(this.handicappedStatus[i]==false){
@@ -242,6 +242,7 @@ class Ground_Floor extends Floor{
         }
         return -1;
     }
+	
     public int exit(String Vehicle_type, String Vehicle_number){
     	SimpleDateFormat outtime = new SimpleDateFormat("yyyy.MM.dd G HH:mm:ss");
     	Date dateout=new Date();
@@ -249,6 +250,7 @@ class Ground_Floor extends Floor{
     	long timeout =dateout.getTime();
     	//this.current_capacity--;
         int i;
+	    //  int EV_Charge(String VehicleNumber,boolean ChargeRequired)
         if(Vehicle_type.equals("EV2W") ) {
         	for(i=0;i< 20; i++) {
         		if(EV_2_Wheelers_array[i].VehicleNumber.equals(Vehicle_number)) {
@@ -262,10 +264,10 @@ class Ground_Floor extends Floor{
         	long duration = (timeout - intime)/1000 ;
         	float durationinhours =(float)duration/3600;
         	float rate=20;
-        	if(durationinhours <= 1) {return (int)rate;}
+        	if(durationinhours <= 1) {return (int)rate + EV.EV_Charge(EV_2_Wheelers_array[i].VehicleNumber,true,3);} // 3 is number of Watts of charge used by Vehicle
         	else {
-        	    rate=20+((durationinhours-1)*10);
-        	    return (int)rate;
+        	    rate=20+((durationinhours-1)*10)
+        	    return (int)rate+EV.EV_Charge(EV_2_Wheelers_array[i].VehicleNumber,true,3); // 3 is number of Watts of charge used by Vehicle
         	}
         }
         else if(Vehicle_type.equals("EV4W") ) {
@@ -280,10 +282,10 @@ class Ground_Floor extends Floor{
         	long duration = (timeout - intime)/1000 ;
         	float durationinhours =(float)duration/3600;
         	float rate=20;
-        	if(durationinhours <= 1) {return (int)rate;}
+        	if(durationinhours <= 1) {return (int)rate+EV.EV_Charge(EV_4_Wheelers_array[i].VehicleNumber,true,3);}
         	else {
         	    rate=20+((durationinhours-1)*10);
-        	    return (int)rate;
+        	    return (int)rate+EV.EV_Charge(EV_4_Wheelers_array[i].VehicleNumber,true,3); // 3 is number of Watts of charge used by Vehicle
         	}
         }
         else if(Vehicle_type.equals("h") ) {
@@ -457,7 +459,8 @@ class Normal_Floor extends Floor{
         	long duration = (timeout - intime)/1000 ;
         	float durationinhours =(float)duration/3600;
         	float rate=20;
-        	if(durationinhours <= 1) {return (int)rate;}
+        	
+		if(durationinhours <= 1) {return (int)rate;}
         	else {
         	    rate=20+((durationinhours-1)*10);
         	    return (int)rate;
@@ -760,36 +763,76 @@ class Exit {
 		Scanner sc= new Scanner(System.in);
 		floor = sc.nextInt();
 		sc.nextLine();
+		int price=0;
 		Vehicle_Type = sc.nextLine();
 		Vehicle_Number=sc.nextLine();
 		if(floor==0) {
-			int price = ground.exit(Vehicle_Type, Vehicle_Number);
+			price = ground.exit(Vehicle_Type, Vehicle_Number);
 			System.out.println(price);
 		}
 		else if(floor==1) {
-			int price = f1.exit(Vehicle_Type, Vehicle_Number);
+			price = f1.exit(Vehicle_Type, Vehicle_Number);
 			System.out.println(price);
 		}
 		else if(floor==2) {
-			int price = f2.exit(Vehicle_Type, Vehicle_Number);
+			price = f2.exit(Vehicle_Type, Vehicle_Number);
 			System.out.println(price);
 		}
 		else if(floor==3) {
-			int price = f3.exit(Vehicle_Type, Vehicle_Number);
+			price = f3.exit(Vehicle_Type, Vehicle_Number);
 			System.out.println(price);
 		}
 		else if(floor==4) {
-			int price = f4.exit(Vehicle_Type, Vehicle_Number);
+			price = f4.exit(Vehicle_Type, Vehicle_Number);
 			System.out.println(price);
 		}
 		else if(floor==5) {
-			int price = f5.exit(Vehicle_Type, Vehicle_Number);
+			price = f5.exit(Vehicle_Type, Vehicle_Number);
 			System.out.println(price);
 		}
+		int pay=0,GivenCash=0;
+		boolean flag=true;
+		while(flag){
+			System.out.println( "If you want to pay in CASH (PRESS 1) or CARD (PRESS 2) or UPI (PRESS 3)");
+			pay=sc.nextInt();
+			if(pay==1) {
+				System.out.println("How much cash given in rupees: ");
+				GivenCash=sc.nextInt();
+				if(GivenCash>=price) {
+					System.out.println("Return: "+ (GivenCash-price));
+					flag=false;
+				}	
+			}
+			else if(pay==2){
+				System.out.println("Scan your card here");
+				GivenCash=sc.nextInt();
+				if(GivenCash==price){
+					System.out.println("Your TRANSACTION is SUCEESFUL");
+					flag=false;
+				}
+				else{
+					System.out.println("Your TRANSACTION has DECLINED\nPlease try again");
+				}
+			}
+			else if(pay==3){
+				System.out.println("Scan this QR code");
+				GivenCash=sc.nextInt();
+				if(GivenCash==price){
+					System.out.println("Your TRANSACTION is SUCEESFUL");
+					flag=false;
+				}
+				else{
+					System.out.println("Your TRANSACTION has DECLINED\nPlease try again");
+				}
+			}
+		}
+		System.out.println("Thanks for Coming to our parking lot");
 	}
+		
+	
 }
 
-public class Parking {
+public class Main {
 	
 
     public static void main(String[] args){
