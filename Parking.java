@@ -18,31 +18,31 @@ class EV{
 // class checkAvailability is to check wether there are availability of slots in any of floor of given type
 class checkAvailability{
     boolean checkAvailabilityCompact(boolean ComFirst,boolean ComSecond,boolean ComThird,boolean ComFour,boolean ComFive){
-        return (ComFirst || ComSecond || ComThird || ComFour || ComFive)
+        return (ComFirst | ComSecond | ComThird | ComFour | ComFive);
     }
     
     boolean checkAvailabilityNormal(boolean NorFirst,boolean NorSecond,boolean NorThird,boolean NorFour,boolean NorFive){
-        return (NorFirst || NorSecond || NorThird || NorFour || NorFive)
+        return (NorFirst | NorSecond | NorThird | NorFour | NorFive);
     }
     
-    boolean checkAvailabilityLarge(boolean LarFirst,boolean LarSecond,boolean LarThird,boolean LarFour,boolean LarFive){
-        return (LarFirst || LarSecond || LarThird || LarFour || LarFive)
+    boolean checkAvailabilityHeavy(boolean LarFirst,boolean LarSecond,boolean LarThird,boolean LarFour,boolean LarFive){
+        return (LarFirst | LarSecond | LarThird | LarFour | LarFive);
     }
     
-    boolean checkAvailability2W(boolean 2WFirst,boolean 2WSecond,boolean 2WThird,boolean 2WFour,boolean 2WFive){
-        return (2WFirst || 2WSecond || 2WThird || 2WFour || 2WFive)
+    boolean checkAvailability2W(boolean twoWFirst,boolean twoWSecond,boolean twoWThird,boolean twoWFour,boolean twoWFive){
+        return (twoWFirst | twoWSecond | twoWThird | twoWFour | twoWFive);
     }
     
     boolean checkAvailabilityHandi(boolean HanFirst,boolean HanSecond,boolean HanThird,boolean HanFour,boolean HanFive){
-        return (HanFirst || HanSecond || HanThird || HanFour || HanFive)
+        return (HanFirst | HanSecond | HanThird | HanFour | HanFive);
     }
     
     boolean checkAvailabilityEV2W(boolean EV2First,boolean EV2Second,boolean EV2Third,boolean EV2Four,boolean EV2Five){
-        return (EV2First || EV2Third || EV2Four || EV2Fiv || EV2Second);
+        return (EV2First | EV2Third | EV2Four | EV2Five | EV2Second);
     }
     
     boolean checkAvailabilityEV4W(boolean EV4First,boolean EV4Second,boolean EV4Third,boolean EV4Four,boolean EV4Five){
-        return (EV4First || EV4Third || EV4Four || EV4Fiv || EV4Second);
+        return (EV4First || EV4Third || EV4Four || EV4Five || EV4Second);
     }
 } 
 
@@ -171,7 +171,10 @@ class Ground_Floor extends Floor{
     int max_EV_4_Wheelers = 30;
     int EV_2_wheelers = 0;
     int max_EV_2_Wheelers = 20;
-
+    boolean handicappedStatus[]=new boolean[50];
+    boolean EV4Status[]=new boolean[30];
+    boolean EV2Status[]=new boolean[20];
+    
     void display_board(){
         System.out.println("Total Empty Slots: " + (max_capacity - current_capacity));
         System.out.println("No. of Handicapped slots available: " + (max_handicapped_vehicles - handicapped_vehicles));
@@ -180,7 +183,7 @@ class Ground_Floor extends Floor{
     }
 // Checking wether there are empty slots in EV_4_Wheelers Section
     boolean EV4checking(){
-        if(this.max_EV_4_Wheelers-this.EV_4_wheelers>0){
+        if(this.max_EV_4_Wheelers>this.EV_4_wheelers){
             return true;
         }
         return false;
@@ -188,7 +191,7 @@ class Ground_Floor extends Floor{
     
 // Checking wether there are empty slots in EV_2_Wheelers Section
     boolean EV2checking(){
-        if(this.max_EV_2_Wheelers-this.EV_2_wheelers>0){
+        if(this.max_EV_2_Wheelers>this.EV_2_wheelers){
             return true;
         }
         return false;
@@ -197,15 +200,42 @@ class Ground_Floor extends Floor{
     
 // Checking wether there are empty slots in Handicapped Section
     boolean HandicappedChecking(){
-        if(this.max_handicapped_vehicles-this.handicapped_vehicles>0){
+        if(this.max_handicapped_vehicles>this.handicapped_vehicles){
             return true;
         }
         return false;
 
     }
 
-
+    int EV4PlaceChecking(){
+        for(int i=0;i<30;i++){
+            if(this.EV4Status[i]==false) {
+                this.EV4Status[i]=true;
+                return i;
+            }
+        }
+        return -1;
+    }
     
+    int EV2PlaceChecking(){
+        for(int i=0;i<20;i++){
+            if(this.EV2Status[i]==false) {
+                this.EV2Status[i]=true;
+                return i;
+            }
+        }
+        return -1;
+    }
+    
+    int handicappedPlaceChecking(){
+        for(int i=0;i<50;i++){
+            if(this.handicappedStatus[i]==false){
+                this.handicappedStatus[i]=true;
+                return i;
+            }
+        }
+        return -1;
+    }
     void exit(Vehicle v){
         int rate= payment(v);
         this.current_capacity--;
@@ -234,16 +264,13 @@ class Ground_Floor extends Floor{
     //Below functions are called in Entry class when we know the Vehicle Type that entered
     //The functions below create an object of that vehicle to store in its respective array of vehicles
     void ObjectCreation_for_EV_4_W(String Vehicle_Number, boolean chargeRequired){
-        EV_4_Wheelers_array[EV_4_wheelers] = new EV_4_W(Vehicle_Number, true, chargeRequired, false);
-        EV_4_wheelers++;
+        EV_4_Wheelers_array[this.EV4PlaceChecking()] = new EV_4_W(Vehicle_Number, true, chargeRequired, false);
     }
     void ObjectCreation_for_EV_2_W(String Vehicle_Number, boolean chargeRequired){
-        EV_2_Wheelers_array[EV_2_wheelers] = new EV_2_W(Vehicle_Number, true, chargeRequired, false);
-        EV_2_wheelers++;
+        EV_2_Wheelers_array[this.EV2PlaceChecking()] = new EV_2_W(Vehicle_Number, true, chargeRequired, false);
     }
     void ObjectCreation_for_Handicapped(String Vehicle_Type, String Vehicle_Number,boolean EV, boolean chargeRequired){
-        Handicapped_array[handicapped_vehicles] = new Handicapped(Vehicle_Type, Vehicle_Number, EV, chargeRequired, true);
-        handicapped_vehicles++;
+        Handicapped_array[this.handicappedPlaceChecking()] = new Handicapped(Vehicle_Type, Vehicle_Number, EV, chargeRequired, true);
     }
 
 }
@@ -259,9 +286,14 @@ class Normal_Floor extends Floor{
     int max_heavy_4_wheelers = 10;
     int two_wheelers = 0;
     int max_two_wheelers = 30;
+    boolean normal4WheelerStatus[]=new boolean[35];
+    boolean compact4WheelerStatus[]=new boolean[25];
+    boolean heavy4WheelerStatus[]=new boolean[10];
+    boolean twoWheelerStatus[]=new boolean[30];
+    
 	// Checking wether there are empty slots in Compact_4_Wheelers Section
-	boolean CompactChecking(){
-        if(this.max_compact_4_wheelers-this.compact_4_wheelers){
+	boolean compactChecking(){
+        if(this.max_compact_4_wheelers>this.compact_4_wheelers){
             return true;
         }
         // else if(NormalChecking()){
@@ -270,15 +302,15 @@ class Normal_Floor extends Floor{
         return false;
     }
     // Checking wether there are empty slots in Large_4_Wheelers Section
-    boolean LargeChecking(){
-        if(this.max_large_4_wheelers-this.large_4_wheelers){
+    boolean heavyChecking(){
+        if(this.max_heavy_4_wheelers>this.heavy_4_wheelers){
             return true;
         }
         return false;
     }
     // Checking wether there are empty slots in Normal_4_Wheelers Section
-    boolean NormalChecking(){
-        if(this.max_normal_4_wheelers-this.normal_4_wheelers){
+    boolean normalChecking(){
+        if(this.max_normal_4_wheelers>this.normal_4_wheelers){
             return true;
         }
         // else if(LargeChecking()){
@@ -287,9 +319,9 @@ class Normal_Floor extends Floor{
         return false;
     }
     // Checking wether there are empty slots in 2_Wheelers Section
-    boolean 2WheelerChecking(){
+    boolean twoWheelerChecking(){
         if(this.max_two_wheelers>this.two_wheelers){
-            rertun true;
+            return true;
         }
         // else if(CompactChecking()){
         //     return true;
@@ -307,8 +339,46 @@ class Normal_Floor extends Floor{
         System.out.println("Total Empty 2W Slots: " + (this.max_two_wheelers - this.two_wheelers));
     }
 
+    int compactPlaceChecking(){
+        for(int i=0;i<25;i++){
+            if(this.compact4WheelerStatus[i]==false){
+                compact4WheelerStatus[i]=true;
+                return i;
+            }
+        }
+        return -1;
+    }
+    
+    int normalPlaceChecking(){
+        for(int i=0;i<35;i++){
+            if(this.normal4WheelerStatus[i]==false){
+                normal4WheelerStatus[i]=true;
+                return i;
+            }
+        }
+        return -1;
+    }
 
-
+    int heavyPlaceChecking(){
+        for(int i=0;i<25;i++){
+            if(this.heavy4WheelerStatus[i]==false){
+                heavy4WheelerStatus[i]=true;
+                return i;
+            }
+        }
+        return -1;
+    }
+    
+    int twoWheelerPlaceChecking(){
+        for(int i=0;i<25;i++){
+            if(this.twoWheelerStatus[i]==false){
+                twoWheelerStatus[i]=true;
+                return i;
+            }
+        }
+        return -1;
+    }
+    
     void exit(Vehicle v){
         int rate= payment(v);
         this.current_capacity--;
@@ -347,20 +417,16 @@ class Normal_Floor extends Floor{
     //Below functions are called in Entry class when we know the Vehicle Type that entered
     //The functions below create an object of that vehicle to store in its respective array of vehicles
     void ObjectCreation_for_Two_Wheeler(String Vehicle_Type, String Vehicle_Number,boolean EV, boolean chargeRequired){
-        two_Wheeler_array[two_wheelers] = new Two_Wheeler(Vehicle_Type, Vehicle_Number, EV, chargeRequired, false);
-        two_wheelers++;
+        two_Wheeler_array[twoWheelerPlaceChecking()] = new Two_Wheeler(Vehicle_Type, Vehicle_Number, EV, chargeRequired, false);
     }
     void ObjectCreation_for_Compact_4_W(String Vehicle_Type, String Vehicle_Number,boolean EV, boolean chargeRequired){
-        Compact_4_W_array[compact_4_wheelers] = new Compact_4_W(Vehicle_Type, Vehicle_Number, EV, chargeRequired, false);
-        compact_4_wheelers++;
+        Compact_4_W_array[compactPlaceChecking()] = new Compact_4_W(Vehicle_Type, Vehicle_Number, EV, chargeRequired, false);
     }
     void ObjectCreation_for_Normal_4_W(String Vehicle_Type, String Vehicle_Number,boolean EV, boolean chargeRequired){
-        Normal_4_W_array[normal_4_wheelers] = new Normal_4_W(Vehicle_Type, Vehicle_Number, EV, chargeRequired, false);
-        normal_4_wheelers++;
+        Normal_4_W_array[normalPlaceChecking()] = new Normal_4_W(Vehicle_Type, Vehicle_Number, EV, chargeRequired, false);
     }
     void ObjectCreation_for_Heavy_4_W(String Vehicle_Type, String Vehicle_Number,boolean EV, boolean chargeRequired){
-        Heavy_4_W_array[heavy_4_wheelers] = new Heavy_4_W(Vehicle_Type, Vehicle_Number, EV, chargeRequired, false);
-        heavy_4_wheelers++;
+        Heavy_4_W_array[heavyPlaceChecking()] = new Heavy_4_W(Vehicle_Type, Vehicle_Number, EV, chargeRequired, false);
     }
 
     
@@ -416,7 +482,7 @@ class Entry{
         else chargeRequired = false;
 
 
-		System.out.print("3. Handicapped? (Enter true or false)");
+		System.out.println("3. Handicapped? (Enter true or false)");
 		Handicapped = sc.nextBoolean();		
 
         //Ticket printed is displayed
@@ -516,7 +582,7 @@ class Entry{
 		else if(Vehicle_type==4)System.out.print("\n 4-wheeler heavy");
 
 
-		System.out.print("\nEV:"+EV+"\nEV charging:"+chargeRequired+"\nHandicapped:"+Handicapped);
+		System.out.println("\nEV:"+EV+"\nEV charging:"+chargeRequired+"\nHandicapped:"+Handicapped);
 
 		System.out.println(java.time.LocalDateTime.now());
 
@@ -555,10 +621,11 @@ public class Parking {
         //For object calling inside the entry() method
         //Declared in main and used in entry to avoid override of things
         Entry.entry(ground, floors[0], floors[1], floors[2], floors[3], floors[4]);
-
+        Entry.entry(ground, floors[0], floors[1], floors[2], floors[3], floors[4]);
 
         //To check if its working
-        System.out.println(floors[2].Heavy_4_W_array[0].VehicleNumber);
+        System.out.println(ground.EV_2_Wheelers_array[0].VehicleNumber);
+        System.out.println(ground.EV_2_Wheelers_array[1].VehicleNumber);
         //Successfully completed
 
         //FUCK CODING!!!!!!
