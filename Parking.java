@@ -1,4 +1,7 @@
 import java.util.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.*;
 import java.text.*;
 // class EV with method EV_Charge to calculate Charging price 
@@ -250,6 +253,7 @@ class Ground_Floor extends Floor{
     	long timeout =dateout.getTime();
     	//this.current_capacity--;
         int i;
+        int totalPrice=0;
 	    //  int EV_Charge(String VehicleNumber,boolean ChargeRequired)
         if(Vehicle_type.equals("EV2W") ) {
         	for(i=0;i< 20; i++) {
@@ -264,11 +268,20 @@ class Ground_Floor extends Floor{
         	long duration = (timeout - intime)/1000 ;
         	float durationinhours =(float)duration/3600;
         	float rate=20;
-        	if(durationinhours <= 1) {return (int)rate + EV.EV_Charge(EV_2_Wheelers_array[i].VehicleNumber,true,3);} // 3 is number of Watts of charge used by Vehicle
+        	
+        	if(durationinhours <= 1) {
+        		totalPrice= (int)rate + EV.EV_Charge(EV_2_Wheelers_array[i].VehicleNumber,true,3);} // 3 is number of Watts of charge used by Vehicle
         	else {
-        	    rate=20+((durationinhours-1)*10)
-        	    return (int)rate+EV.EV_Charge(EV_2_Wheelers_array[i].VehicleNumber,true,3); // 3 is number of Watts of charge used by Vehicle
+        	    rate=20+((durationinhours-1)*10);
+        	    totalPrice= (int)rate+EV.EV_Charge(EV_2_Wheelers_array[i].VehicleNumber,true,3); // 3 is number of Watts of charge used by Vehicle
         	}
+    		File Data = new File("Data.txt");
+    		try {
+    			Data.createNewFile();
+    			FileWriter Fwriter = new FileWriter(Data,true);
+    			Fwriter.write("  "+EV_2_Wheelers_array[i].VehicleNumber+"          2-Wheeler                 yes                "+EV_2_Wheelers_array[i].Handicapped+"               "+totalPrice+"\n");
+    			Fwriter.close();
+    		}catch(IOException e) {}
         }
         else if(Vehicle_type.equals("EV4W") ) {
         	for(i=0;i< 30; i++) {
@@ -282,11 +295,18 @@ class Ground_Floor extends Floor{
         	long duration = (timeout - intime)/1000 ;
         	float durationinhours =(float)duration/3600;
         	float rate=20;
-        	if(durationinhours <= 1) {return (int)rate+EV.EV_Charge(EV_4_Wheelers_array[i].VehicleNumber,true,3);}
+        	if(durationinhours <= 1) {totalPrice= (int)rate+EV.EV_Charge(EV_4_Wheelers_array[i].VehicleNumber,true,3);}
         	else {
         	    rate=20+((durationinhours-1)*10);
-        	    return (int)rate+EV.EV_Charge(EV_4_Wheelers_array[i].VehicleNumber,true,3); // 3 is number of Watts of charge used by Vehicle
+        	    totalPrice= (int)rate+EV.EV_Charge(EV_4_Wheelers_array[i].VehicleNumber,true,3); // 3 is number of Watts of charge used by Vehicle
         	}
+    		File Data = new File("Data.txt");
+    		try {
+    			Data.createNewFile();
+    			FileWriter Fwriter = new FileWriter(Data,true);
+    			Fwriter.write("  "+EV_4_Wheelers_array[i].VehicleNumber+"          4-Wheeler                 yes                "+EV_4_Wheelers_array[i].Handicapped+"               "+totalPrice+"\n");
+    			Fwriter.close();
+    		}catch(IOException e) {}
         }
         else if(Vehicle_type.equals("h") ) {
         	for(i=0;i< 50; i++) {
@@ -300,13 +320,20 @@ class Ground_Floor extends Floor{
         	long duration = (timeout - intime)/1000 ;
         	float durationinhours =(float)duration/3600;
         	float rate=20;
-        	if(durationinhours <= 1) {return (int)rate;}
+        	if(durationinhours <= 1) {totalPrice =  (int)rate;}
         	else {
         	    rate=20+((durationinhours-1)*10);
-        	    return (int)rate;
+        	    totalPrice= (int)rate;
         	}
+    		File Data = new File("Data.txt");
+    		try {
+    			Data.createNewFile();
+    			FileWriter Fwriter = new FileWriter(Data,true);
+    			Fwriter.write("  "+Handicapped_array[i].VehicleNumber+"          Handicapped                 "+Handicapped_array[i].ChargeRequired+"                yes               "+totalPrice+"\n");
+    			Fwriter.close();
+    		}catch(IOException e) {}
         }
-        return 0;
+        return totalPrice;
     }
     int payment(Vehicle v){
         return 0;
@@ -447,6 +474,7 @@ class Normal_Floor extends Floor{
     	outtime.setTimeZone(TimeZone.getTimeZone("IST"));
     	long timeout =dateout.getTime();
         int i;
+        int totalPrice=0;
         if(Vehicle_type.equals("2W") ) {
         	for(i=0;i< 30; i++) {
         		if(two_Wheeler_array[i].VehicleNumber.equals(Vehicle_number)) {
@@ -460,11 +488,18 @@ class Normal_Floor extends Floor{
         	float durationinhours =(float)duration/3600;
         	float rate=20;
         	
-		if(durationinhours <= 1) {return (int)rate;}
+		if(durationinhours <= 1) {totalPrice = (int)rate;}
         	else {
         	    rate=20+((durationinhours-1)*10);
-        	    return (int)rate;
+        	    totalPrice= (int)rate;
         	}
+			File Data = new File("Data.txt");
+			try {
+				Data.createNewFile();
+				FileWriter Fwriter = new FileWriter(Data,true);
+				Fwriter.write("  "+two_Wheeler_array[i].VehicleNumber+"          2-Wheeler                 no                no               "+totalPrice+"\n");
+				Fwriter.close();
+			}catch(IOException e) {}
         	
         }
         else if(Vehicle_type.equals("C4W") ) {
@@ -479,11 +514,18 @@ class Normal_Floor extends Floor{
         	long duration = (timeout - intime)/1000 ;
         	float durationinhours =(float)duration/3600;
         	float rate=20;
-        	if(durationinhours <= 1) {return (int)rate;}
+        	if(durationinhours <= 1) {totalPrice= (int)rate;}
         	else {
         	    rate=20+((durationinhours-1)*10);
-        	    return (int)rate;
+        	    totalPrice= (int)rate;
         	}
+    		File Data = new File("Data.txt");
+    		try {
+    			Data.createNewFile();
+    			FileWriter Fwriter = new FileWriter(Data,true);
+    			Fwriter.write("  "+Compact_4_W_array[i].VehicleNumber+"          4-Wheeler(C)                 no                no               "+totalPrice+"\n");
+    			Fwriter.close();
+    		}catch(IOException e) {}
         }
         else if(Vehicle_type.equals("N4W") ) {
         	for(i=0;i< 35; i++) {
@@ -497,11 +539,18 @@ class Normal_Floor extends Floor{
         	long duration = (timeout - intime)/1000 ;
         	float durationinhours =(float)duration/3600;
         	float rate=20;
-        	if(durationinhours <= 1) {return (int)rate;}
+        	if(durationinhours <= 1) {totalPrice = (int)rate;}
         	else {
         	    rate=20+((durationinhours-1)*10);
-        	    return (int)rate;
+        	    totalPrice = (int)rate;
         	}
+    		File Data = new File("Data.txt");
+    		try {
+    			Data.createNewFile();
+    			FileWriter Fwriter = new FileWriter(Data,true);
+    			Fwriter.write("  "+Normal_4_W_array[i].VehicleNumber+"          4-Wheeler(N)                 no                no               "+totalPrice+"\n");
+    			Fwriter.close();
+    		}catch(IOException e) {}
         }
         else if(Vehicle_type.equals("H4W") ) {
         	for(i=0;i< 10; i++) {
@@ -515,13 +564,20 @@ class Normal_Floor extends Floor{
         	long duration = (timeout - intime)/1000 ;
         	float durationinhours =(float)duration/3600;
         	float rate=20;
-        	if(durationinhours <= 1) {return (int)rate;}
+        	if(durationinhours <= 1) {totalPrice = (int)rate;}
         	else {
         	    rate=20+((durationinhours-1)*10);
-        	    return (int)rate;
+        	    totalPrice = (int)rate;
         	}
+    		File Data = new File("Data.txt");
+    		try {
+    			Data.createNewFile();
+    			FileWriter Fwriter = new FileWriter(Data,true);
+    			Fwriter.write("  "+Heavy_4_W_array[i].VehicleNumber+"          4-Wheeler(H)                 no                no               "+totalPrice+"\n");
+    			Fwriter.close();
+    		}catch(IOException e) {}
         }
-        return 0;
+        return totalPrice;
     }
     int payment(Vehicle v){
         return 0;
@@ -559,9 +615,7 @@ class Normal_Floor extends Floor{
     
 }
 
-//Dont know why Entry class. Maybe to show OOPS concept.
-//Fuck this shit. This shit is ass.
-//I wish I was a Jew, where's the gas?
+
 class Entry {
 
 
@@ -576,14 +630,14 @@ class Entry {
         
 
 
-        //Taking user input. Why?? Fuck life. Hate life. Kill yourself
+        //Taking user input. 
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Welcome to IIT-TP Parking");
 		System.out.print("Please provide the following information:\n1. Enter Vehicle Number:");
 		
         Vehicle_Number=sc.next(); //Input Vehicle_Number as a String
 
-		System.out.println("What is your Vehicle Type?(enter choice number)\n1. 2-Wheeler.\n2. 4-wheeler Compact.\n3. 4-wheeler normal\n 4. 4-wheeler heavy");
+		System.out.println("What is your Vehicle Type?(enter choice number)\n1. 2-Wheeler.\n2. 4-wheeler Compact.\n3. 4-wheeler normal\n4. 4-wheeler heavy");
 		
         int check=0;
 
@@ -716,16 +770,16 @@ class Entry {
         System.out.println("-----  Floor ("+1+")   -----"); // prints the floor number
         f1.display_board(); // its data
         System.out.println("-----  Floor ("+2+")   -----"); // prints the floor number
-        f1.display_board(); // its data
+        f2.display_board(); // its data
         System.out.println("-----  Floor ("+3+")   -----"); // prints the floor number
-        f1.display_board(); // its data
+        f3.display_board(); // its data
         System.out.println("-----  Floor ("+4+")   -----"); // prints the floor number
-        f1.display_board(); // its data
+        f4.display_board(); // its data
         System.out.println("-----  Floor ("+5+")   -----"); // prints the floor number
-        f1.display_board(); // its data
+        f5.display_board(); // its data
 
 
-        System.out.print("Which Floor?");
+        System.out.print("From sensor at entry\nWhich Floor?\n");
         floor = sc.nextInt();
         return floor;
     }
@@ -761,10 +815,13 @@ class Exit {
 		int floor;
 		String Vehicle_Type, Vehicle_Number;
 		Scanner sc= new Scanner(System.in);
+		System.out.print("Enter floor:");
 		floor = sc.nextInt();
 		sc.nextLine();
 		int price=0;
+		System.out.print("Enter Vehicle Type:");
 		Vehicle_Type = sc.nextLine();
+		System.out.print("\nEnter Vehicle Number:");
 		Vehicle_Number=sc.nextLine();
 		if(floor==0) {
 			price = ground.exit(Vehicle_Type, Vehicle_Number);
@@ -832,12 +889,26 @@ class Exit {
 	
 }
 
-public class Main {
+public class Parking {
 	
 
     public static void main(String[] args){
     	Scanner sc = new Scanner(System.in);
         int i;
+        
+        //Here we are using file handling and creating a .txt file.
+        //we are using try and catch method to remove different types of exception.
+        //we are using .createNewFile method which creates the file if it is not already present
+        //if already present it remains unchanged
+        //createNewFile is boolean return type
+        //we FileWriter class to append data to the file
+		File Data = new File("Data.txt");
+		try {
+			Data.createNewFile();
+			FileWriter Fwriter = new FileWriter(Data,true);
+			Fwriter.write("Vehicle Number     Vehicle Type     EV Charge reqiured     Handicapped     Rate\n");
+			Fwriter.close();
+		}catch(IOException e) {}
         
         //clock object for storing time
         SimpleDateFormat stime = new SimpleDateFormat("yyyy.MM.dd G HH:mm:ss");
@@ -859,18 +930,51 @@ public class Main {
 
         //For object calling inside the entry() method
         //Declared in main and used in entry to avoid override of things
-        Entry.entry(ground, floors[0], floors[1], floors[2], floors[3], floors[4]);
-        
+        int choice;
+        while(true) {
+        	System.out.println("Enter valid option :\n1.Vehicle Entry.\n2.Vehicle Exit.\n3.Close Parking lot.\n4.Print Data.");
+        	choice = sc.nextInt();
+        	switch(choice) {
+        	case 1:
+        		Entry.entry(ground, floors[0], floors[1], floors[2], floors[3], floors[4]);
+        		break;
+        	case 2:
+        		Exit.exit(ground, floors[0], floors[1], floors[2], floors[3], floors[4]);
+        		break;
+        	case 3:
+        		System.out.println("Parking lot closed !!!");
+        		System.exit(0);
+        	case 4:
+        		//we are Scanner(Object) to read and print file data
+        		//here .hasNext() returns true if there is data present after pointer and print data using scanner_name.nextLine
+        		try{
+        			Scanner Fscn = new Scanner(Data);
+        			while(Fscn.hasNext()) {
+        				System.out.println(Fscn.nextLine());
+        			}
+        			Fscn.close();
+        		}catch(IOException e) {}
+        		break;
+        		
+        	default :
+        		System.out.println("Invalid choice!!! Please make a valid choice. \n\n");
+        	}
+        	
+        }
 
         //To check if its working
-        Exit.exit(ground, floors[0], floors[1], floors[2], floors[3], floors[4]);
  
         //Successfully completed
 
         
-        //ground.display_board();
-
-        //FUCK CODING!!!!!!
+        
 
     }
 }
+
+// Credits : Group 10 
+// 1.Chetan Moturi CS21B017
+// 2.A shree Balaji CS21B008
+// 3.Teja manchikatla CS21B031
+// 4.KE Nanda Kishore CS21B025
+// 5 Andaluri SPVM Aditya CS21B0021
