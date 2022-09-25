@@ -15,6 +15,36 @@ class EV{
 		return 0;
 	}
 }
+// class checkAvailability is to check wether there are availability of slots in any of floor of given type
+class checkAvailability{
+    boolean checkAvailabilityCompact(boolean ComFirst,boolean ComSecond,boolean ComThird,boolean ComFour,boolean ComFive){
+        return (ComFirst || ComSecond || ComThird || ComFour || ComFive)
+    }
+    
+    boolean checkAvailabilityNormal(boolean NorFirst,boolean NorSecond,boolean NorThird,boolean NorFour,boolean NorFive){
+        return (NorFirst || NorSecond || NorThird || NorFour || NorFive)
+    }
+    
+    boolean checkAvailabilityLarge(boolean LarFirst,boolean LarSecond,boolean LarThird,boolean LarFour,boolean LarFive){
+        return (LarFirst || LarSecond || LarThird || LarFour || LarFive)
+    }
+    
+    boolean checkAvailability2W(boolean 2WFirst,boolean 2WSecond,boolean 2WThird,boolean 2WFour,boolean 2WFive){
+        return (2WFirst || 2WSecond || 2WThird || 2WFour || 2WFive)
+    }
+    
+    boolean checkAvailabilityHandi(boolean HanFirst,boolean HanSecond,boolean HanThird,boolean HanFour,boolean HanFive){
+        return (HanFirst || HanSecond || HanThird || HanFour || HanFive)
+    }
+    
+    boolean checkAvailabilityEV2W(boolean EV2First,boolean EV2Second,boolean EV2Third,boolean EV2Four,boolean EV2Five){
+        return (EV2First || EV2Third || EV2Four || EV2Fiv || EV2Second);
+    }
+    
+    boolean checkAvailabilityEV4W(boolean EV4First,boolean EV4Second,boolean EV4Third,boolean EV4Four,boolean EV4Five){
+        return (EV4First || EV4Third || EV4Four || EV4Fiv || EV4Second);
+    }
+} 
 
 
 // Vehicle is an abstract class that extends to classes such as Two_Wheeler, Compact_4_W, Normal_4_W, Heavy_4_W
@@ -148,6 +178,31 @@ class Ground_Floor extends Floor{
         System.out.println("No. of 4W EV slots available: " + (max_EV_4_Wheelers-EV_4_wheelers));
         System.out.println("No. of 2W EV slots available: " + (max_EV_2_Wheelers-EV_2_wheelers));
     }
+// Checking wether there are empty slots in EV_4_Wheelers Section
+    boolean EV4checking(){
+        if(this.max_EV_4_Wheelers-this.EV_4_wheelers>0){
+            return true;
+        }
+        return false;
+    }
+    
+// Checking wether there are empty slots in EV_2_Wheelers Section
+    boolean EV2checking(){
+        if(this.max_EV_2_Wheelers-this.EV_2_wheelers>0){
+            return true;
+        }
+        return false;
+ 
+    }
+    
+// Checking wether there are empty slots in Handicapped Section
+    boolean HandicappedChecking(){
+        if(this.max_handicapped_vehicles-this.handicapped_vehicles>0){
+            return true;
+        }
+        return false;
+
+    }
 
 
     
@@ -204,6 +259,44 @@ class Normal_Floor extends Floor{
     int max_heavy_4_wheelers = 10;
     int two_wheelers = 0;
     int max_two_wheelers = 30;
+	// Checking wether there are empty slots in Compact_4_Wheelers Section
+	boolean CompactChecking(){
+        if(this.max_compact_4_wheelers-this.compact_4_wheelers){
+            return true;
+        }
+        // else if(NormalChecking()){
+        //     return true;
+        // }
+        return false;
+    }
+    // Checking wether there are empty slots in Large_4_Wheelers Section
+    boolean LargeChecking(){
+        if(this.max_large_4_wheelers-this.large_4_wheelers){
+            return true;
+        }
+        return false;
+    }
+    // Checking wether there are empty slots in Normal_4_Wheelers Section
+    boolean NormalChecking(){
+        if(this.max_normal_4_wheelers-this.normal_4_wheelers){
+            return true;
+        }
+        // else if(LargeChecking()){
+        //     return true;
+        // }
+        return false;
+    }
+    // Checking wether there are empty slots in 2_Wheelers Section
+    boolean 2WheelerChecking(){
+        if(this.max_two_wheelers>this.two_wheelers){
+            rertun true;
+        }
+        // else if(CompactChecking()){
+        //     return true;
+        // }
+        return false;
+    }
+
 
     //Displays all the info about a particular floor
     void display_board(){
@@ -293,11 +386,11 @@ class Entry{
         //Taking user input. Why?? Fuck life. Hate life. Kill yourself
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Welcome to IIT-TP Parking");
-		System.out.print("Answer the following:\n1. Enter Vehicle Number:");
+		System.out.print("Please provide the following information:\n1. Enter Vehicle Number:");
 		
         Vehicle_Number=sc.next(); //Input Vehicle_Number as a String
 
-		System.out.println("What is the Vehicle Type?(enter choice number)\n1. 2-Wheeler.\n2. 4-wheeler Compact.\n3. 4-wheeler normal\n 4. 4-wheeler heavy");
+		System.out.println("What is your Vehicle Type?(enter choice number)\n1. 2-Wheeler.\n2. 4-wheeler Compact.\n3. 4-wheeler normal\n 4. 4-wheeler heavy");
 		
         int check=0;
 
@@ -312,7 +405,7 @@ class Entry{
 		}
 
 
-		System.out.print("2. Is it EV or not?");
+		System.out.print("2. If the vehicle is EV? (Enter true) else (Enter false)");
 		EV = sc.nextBoolean();
 
 
@@ -323,7 +416,7 @@ class Entry{
         else chargeRequired = false;
 
 
-		System.out.print("3. Are you Handicapped?");
+		System.out.print("3. Handicapped? (Enter true or false)");
 		Handicapped = sc.nextBoolean();		
 
         //Ticket printed is displayed
