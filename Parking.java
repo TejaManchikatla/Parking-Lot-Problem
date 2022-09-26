@@ -169,12 +169,14 @@ abstract class Floor{
 
 // contains all the contents of ground floor of the building
 class Ground_Floor extends Floor{
+
     int handicapped_vehicles = 0;
-    int max_handicapped_vehicles = 50;
+    private final int max_handicapped_vehicles = 50;
     int EV_4_wheelers = 0;
-    int max_EV_4_Wheelers = 30;
+    private final int max_EV_4_Wheelers = 30;
     int EV_2_wheelers = 0;
-    int max_EV_2_Wheelers = 20;
+    private final int max_EV_2_Wheelers = 20;
+
     boolean handicappedStatus[]=new boolean[50];
     boolean EV4Status[]=new boolean[30];
     boolean EV2Status[]=new boolean[20];
@@ -310,7 +312,7 @@ class Ground_Floor extends Floor{
     			Fwriter.close();
     		}catch(IOException e) {}
         }
-        else if(Vehicle_type.equals("h") ) {
+        else if(Vehicle_type.equals("HV") ) {
         	for(i=0;i< 50; i++) {
         		if(Handicapped_array[i].VehicleNumber.equals(Vehicle_number)) { // Checking position of object in the array of Handicapped in ground floor
         			break;
@@ -343,9 +345,9 @@ class Ground_Floor extends Floor{
     }
 
     //Below are the arrays of a specfic vehicle representing the vehicles' slot in that floor
-    EV_4_W[] EV_4_Wheelers_array = new EV_4_W[30];
-    EV_2_W[] EV_2_Wheelers_array = new EV_2_W[20];
-    Handicapped[] Handicapped_array = new Handicapped[30];
+    private EV_4_W[] EV_4_Wheelers_array = new EV_4_W[30];
+    private EV_2_W[] EV_2_Wheelers_array = new EV_2_W[20];
+    private Handicapped[] Handicapped_array = new Handicapped[30];
 
     
 
@@ -367,16 +369,15 @@ class Ground_Floor extends Floor{
 }
 
 class Normal_Floor extends Floor{
-    int current_capacity=0;
-    int max_capacity = 100;
     int compact_4_wheelers = 0;
-    int max_compact_4_wheelers = 25;
+    private final int max_compact_4_wheelers = 25;
     int normal_4_wheelers = 0;
-    int max_normal_4_wheelers = 35;
+    private final int max_normal_4_wheelers = 35;
     int heavy_4_wheelers = 0;
-    int max_heavy_4_wheelers = 10;
+    private final int max_heavy_4_wheelers = 10;
     int two_wheelers = 0;
-    int max_two_wheelers = 30;
+    private final int max_two_wheelers = 30;
+
     boolean normal4WheelerStatus[]=new boolean[35];
     boolean compact4WheelerStatus[]=new boolean[25];
     boolean heavy4WheelerStatus[]=new boolean[10];
@@ -414,7 +415,6 @@ class Normal_Floor extends Floor{
 
     //Displays all the info about a particular floor
     void display_board(){
-        System.out.println("Total Empty Slots: " + (this.max_capacity - this.current_capacity));
         System.out.println("Total Empty Compact 4W Slots: " + (this.max_compact_4_wheelers - this.compact_4_wheelers));
         System.out.println("Total Empty Normal 4W Slots: " + (this.max_normal_4_wheelers - this.normal_4_wheelers));
         System.out.println("Total Empty Large 4W Slots: " + (this.max_heavy_4_wheelers - this.heavy_4_wheelers));
@@ -595,10 +595,10 @@ class Normal_Floor extends Floor{
     }
 
     //Below are the arrays of a specific vehicle representing the vehicles' slot in that floor
-    Two_Wheeler[] two_Wheeler_array = new Two_Wheeler[30];
-    Compact_4_W[] Compact_4_W_array = new Compact_4_W[25];
-    Normal_4_W[] Normal_4_W_array = new Normal_4_W[35];
-    Heavy_4_W[] Heavy_4_W_array = new Heavy_4_W[10];
+    private Two_Wheeler[] two_Wheeler_array = new Two_Wheeler[30];
+    private Compact_4_W[] Compact_4_W_array = new Compact_4_W[25];
+    private Normal_4_W[] Normal_4_W_array = new Normal_4_W[35];
+    private Heavy_4_W[] Heavy_4_W_array = new Heavy_4_W[10];
 
     //Below functions are called in Entry class when we know the Vehicle Type that entered
     //The functions below create an object of that vehicle to store in its respective array of vehicles
@@ -787,20 +787,24 @@ class Entry {
 	static void PrintTicket(String Vehicle_Number,int Vehicle_type, boolean EV, boolean chargeRequired, boolean Handicapped) {
 		
         System.out.println("|------IIT-TP PARKING------|");
-		System.out.print("Vehicle Number:"+Vehicle_Number);
+		System.out.println();
+		System.out.println("Vehicle Number:"+Vehicle_Number);
 
 		if(Vehicle_type==1) System.out.print("\n 2-wheeler");
 		else if(Vehicle_type==2)System.out.print("\n 4-wheeler compact");
 		else if(Vehicle_type==3)System.out.print("\n 4-wheeler normal");
 		else if(Vehicle_type==4)System.out.print("\n 4-wheeler heavy");
 
+		System.out.println();
 		System.out.println("\nEV:"+EV+"\nEV charging:"+chargeRequired+"\nHandicapped:"+Handicapped);
-
+		System.out.println();
 		System.out.println(java.time.LocalDateTime.now());
-
+		System.out.println();
 		if(EV || Handicapped) System.out.println("Parking in Ground floor only");
 		else System.out.println("Parking in levels one to five");
+		System.out.println();
 		System.out.println("Price for first 2 hours = ₹50\nPrce per extra hour = ₹20");
+		System.out.println();
 	}
 }
 
@@ -812,10 +816,27 @@ class Exit {
 		int floor,price=0;
 		String Vehicle_Type, Vehicle_Number;
 		Scanner sc= new Scanner(System.in);
-		
+
+		System.out.println();
+		//The QR code is scanned at the exit gate of the floor
+		//Since each floor has its own exit, we are taking it as an input from user. Instead in application 
+		//this is not needed.
 		System.out.print("Enter floor:");
 		floor = sc.nextInt(); // Taking floor input from a sensor
 		sc.nextLine();
+		
+		//The scanner scans the Ticket and gets the below info automatically
+		if(floor==0){
+			System.out.println("Type 'EV2W' for EV 2 Wheeler.");
+			System.out.println("Type 'EV4W' for EV 4 Wheeler.");
+			System.out.println("Type 'HV' for Handicapped Vehicle.");
+		}
+		else{
+			System.out.println("Type '2W' for 2 Wheeler.");
+			System.out.println("Type 'C4W' for Compact 4 Wheeler.");
+			System.out.println("Type 'N4W' for Normal 4 Wheeler.");
+			System.out.println("Type 'H4W' for Heavy 4 Wheeler.");
+		}
 		
 		System.out.print("Enter Vehicle Type:");
 		Vehicle_Type = sc.nextLine(); // Taking Vehicle type form user
@@ -826,27 +847,27 @@ class Exit {
 		// Since, each floor has it's own exit, we take floor as an input from sensor above activate it's exit function
 		if(floor==0) {
 			price = ground.exit(Vehicle_Type, Vehicle_Number);
-			System.out.println(price);
+			System.out.println("Total Price :" + price);
 		}
 		else if(floor==1) {
 			price = f1.exit(Vehicle_Type, Vehicle_Number);
-			System.out.println(price);
+			System.out.println("Total Price :" + price);
 		}
 		else if(floor==2) {
 			price = f2.exit(Vehicle_Type, Vehicle_Number);
-			System.out.println(price);
+			System.out.println("Total Price :" + price);
 		}
 		else if(floor==3) {
 			price = f3.exit(Vehicle_Type, Vehicle_Number);
-			System.out.println(price);
+			System.out.println("Total Price :" + price);
 		}
 		else if(floor==4) {
 			price = f4.exit(Vehicle_Type, Vehicle_Number);
-			System.out.println(price);
+			System.out.println("Total Price :" + price);
 		}
 		else if(floor==5) {
 			price = f5.exit(Vehicle_Type, Vehicle_Number);
-			System.out.println(price);
+			System.out.println("Total Price :" + price);
 		}
 		
 		int pay=0,GivenCash=0; // 'pay' is for which type of payment method used by user to pay
@@ -857,7 +878,7 @@ class Exit {
 			pay=sc.nextInt();
 			// Cash method
 			if(pay==1) { 
-				System.out.println("How much cash given in rupees: ");
+				System.out.println("Cash received from customer : ");
 				GivenCash=sc.nextInt();
 				if(GivenCash>=price) { // If cash given is less than price we ask them to try again
 					System.out.println("Return: "+ (GivenCash-price));
@@ -869,7 +890,8 @@ class Exit {
 			}
 			// Credit Card method
 			else if(pay==2){
-				System.out.println("Scan your card here");
+				System.out.println("Scan your card here.");
+				System.out.println("Scanning completed. Please enter amount :");
 				GivenCash=sc.nextInt(); // Input from bank servers
 				if(GivenCash==price){ //For card to be payment method amount of money given should be tallyed to price of the ticket
 					System.out.println("Your TRANSACTION is SUCEESFUL");
@@ -882,6 +904,7 @@ class Exit {
 			// UPI method
 			else if(pay==3){
 				System.out.println("Scan this QR code");
+				System.out.println("Scanning completed. Please enter amount :");
 				GivenCash=sc.nextInt(); // Input from server of UPI's  
 				if(GivenCash==price){ //For UPI to be payment method amount of money given should be tallyed to price of the ticket
 					System.out.println("Your TRANSACTION is SUCEESFUL");
@@ -918,12 +941,6 @@ public class Parking {
 			}
 		}catch(IOException e) {}
         
-        //clock object for storing time
-        SimpleDateFormat stime = new SimpleDateFormat("yyyy.MM.dd G HH:mm:ss");
-        Date sdate = new Date();
-        stime.setTimeZone(TimeZone.getTimeZone("IST"));
-        System.out.println(sdate.getTime());
-
         // array to store the objects of normal-floors
         Normal_Floor[] floors = new Normal_Floor[5]; //building of 1 ground and 5 normal floors
 
@@ -974,3 +991,5 @@ public class Parking {
 // 3.A Shree Balaji CS21B008
 // 4.K.E.Nanda Kishore CS21B025
 // 5. Andaluri SPVM Aditya CS21B021
+
+//995th line..!! AND YOU KNOW WHY!!
