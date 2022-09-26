@@ -990,6 +990,6 @@ public class Parking {
 // 2.Chetan Moturi CS21B017
 // 3.A Shree Balaji CS21B008
 // 4.K.E.Nanda Kishore CS21B025
-// 5. Andaluri SPVM Aditya CS21B021
+// 5. Andaluri SPVM Aditya CS21B002
 
 //995th line..!! AND YOU KNOW WHY!!
