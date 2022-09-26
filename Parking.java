@@ -1,49 +1,47 @@
 import java.util.*;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.lang.*;
 import java.text.*;
 // class EV with method EV_Charge to calculate Charging price 
 class EV{
-	static int EV_Charge(String VehicleNumber,boolean ChargeRequired,int Watts) {
+	// gives the price of EV charge used by the vehicle
+	static int EV_Charge(String VehicleNumber,boolean ChargeRequired,int Watts) { // Watts is total number of charge used by vehicle
 		if(ChargeRequired) {
-			return 10*Watts;
+			return 10*Watts; //returns total price of charging
 		}
 		return 0;
 	}
 }
 // class checkAvailability is to check whether there are availability of slots in any of floor of given type
 class checkAvailability{
-    public static boolean checkAvailabilityCompact(boolean ComFirst,boolean ComSecond,boolean ComThird,boolean ComFour,boolean ComFive){
-        return (ComFirst | ComSecond | ComThird | ComFour | ComFive);
+    public static boolean checkAvailabilityCompact(boolean ComFirst,boolean ComSecond,boolean ComThird,boolean ComFour,boolean ComFive){ // takes input from all floors for Compact type of vehicle
+        return (ComFirst | ComSecond | ComThird | ComFour | ComFive); // gives output of whether slot is empty or not
     }
     
-    public static boolean checkAvailabilityNormal(boolean NorFirst,boolean NorSecond,boolean NorThird,boolean NorFour,boolean NorFive){
-        return (NorFirst | NorSecond | NorThird | NorFour | NorFive);
+    public static boolean checkAvailabilityNormal(boolean NorFirst,boolean NorSecond,boolean NorThird,boolean NorFour,boolean NorFive){ // takes input from all floors for Normal type of vehicle
+        return (NorFirst | NorSecond | NorThird | NorFour | NorFive); // gives output of whether slot is empty or not
     }
     
-    public static boolean checkAvailabilityHeavy(boolean LarFirst,boolean LarSecond,boolean LarThird,boolean LarFour,boolean LarFive){
-        return (LarFirst | LarSecond | LarThird | LarFour | LarFive);
+    public static boolean checkAvailabilityHeavy(boolean LarFirst,boolean LarSecond,boolean LarThird,boolean LarFour,boolean LarFive){ // takes input from all floors for Heavy type of vehicle
+        return (LarFirst | LarSecond | LarThird | LarFour | LarFive); // gives output of whether slot is empty or not
     }
     
-    public static boolean checkAvailability2W(boolean twoWFirst,boolean twoWSecond,boolean twoWThird,boolean twoWFour,boolean twoWFive){
-        return (twoWFirst | twoWSecond | twoWThird | twoWFour | twoWFive);
+    public static boolean checkAvailability2W(boolean twoWFirst,boolean twoWSecond,boolean twoWThird,boolean twoWFour,boolean twoWFive){ // takes input from all floors for Two wheeler type of vehicle
+        return (twoWFirst | twoWSecond | twoWThird | twoWFour | twoWFive); // gives output of whether slot is empty or not
     }
     
-    public static boolean checkAvailabilityHandi(boolean HanFirst){
-        return (HanFirst);
+    public static boolean checkAvailabilityHandi(boolean HanFirst){ // takes input from gorund floor for Handicapped type
+        return (HanFirst); // gives output of whether slot is empty or not
     }
     
-    public static boolean checkAvailabilityEV2W(boolean EV2First){
-        return (EV2First);
+    public static boolean checkAvailabilityEV2W(boolean EV2First){ // takes input from gorund floor for EV2 Wheeler type of vehicle
+        return (EV2First); // gives output of whether slot is empty or not
     }
     
-    public static boolean checkAvailabilityEV4W(boolean EV4First){
-        return (EV4First);
+    public static boolean checkAvailabilityEV4W(boolean EV4First){ // takes input from gorund floor for EV4 Wheeler type of vehicle
+        return (EV4First); // gives output of whether slot is empty or not
     }
 } 
-
 
 // Vehicle is an abstract class that extends to classes such as Two_Wheeler, Compact_4_W, Normal_4_W, Heavy_4_W
 // EV_4_W and EV_2_W and Handicapped 
@@ -51,16 +49,17 @@ abstract class Vehicle{
     SimpleDateFormat intime = new SimpleDateFormat("yyyy.MM.dd G HH:mm:ss");
     Date datein =new Date();
     String Vehicle_Type;  // 2 Wheeler or Compact 4 W or Normal 4 W or Heavy 4 W
-    String VehicleNumber;  // 
+    String VehicleNumber;  // Stores vehicel number in a string
 	boolean EV;  // boolean if Vehicle is Ev or not
 	boolean ChargeRequired; // Does it require charging
     boolean Handicapped; // boolean if its handicapped or not
     
 }
 
+// This is the class used to store details of a TWO wheeler vehicle
 class Two_Wheeler extends Vehicle{
 
-    //Constructor
+	//Constructor
     Two_Wheeler(String Vehicle_Type, String VehicleNumber, boolean EV,boolean ChargeRequired, boolean Handicapped,SimpleDateFormat intime){
     	this.intime=intime;
         this.Vehicle_Type = Vehicle_Type;
@@ -71,6 +70,7 @@ class Two_Wheeler extends Vehicle{
     }
 }
 
+// This is the class used to store details of a COMPACT four wheeler vehicle
 class Compact_4_W extends Vehicle{
 
     //Constructor
@@ -84,6 +84,7 @@ class Compact_4_W extends Vehicle{
     }
 }
 
+// This is the class used to store details of a NORMAL four wheeler vehicle
 class Normal_4_W extends Vehicle{
 
     //Constructor
@@ -97,6 +98,7 @@ class Normal_4_W extends Vehicle{
     }
 }
 
+// This is the class used to store details of a HEAVY four wheeler vehicle
 class Heavy_4_W extends Vehicle{
 
     //Constructor
@@ -110,6 +112,7 @@ class Heavy_4_W extends Vehicle{
     }
 }
 
+// This is the class used to store details of a HANDICAPPED type of vehicle
 class Handicapped extends Vehicle{
 
     //Constructor
@@ -123,6 +126,8 @@ class Handicapped extends Vehicle{
     }
 }
 
+// This is the class used to store details of a EV(normal, compact, heavy) four wheeler vehicle
+
 class EV_4_W extends Vehicle{
 
     //Constructor
@@ -134,6 +139,8 @@ class EV_4_W extends Vehicle{
         this.Handicapped = Handicapped;
     }
 }
+
+// This is the class used to store details of a EV TWO wheeler vehicle
 
 class EV_2_W extends Vehicle{
 
@@ -147,30 +154,23 @@ class EV_2_W extends Vehicle{
     }
 }
 
-
-
 // Abstract class Floor extending to each floor
+// Contains all common details between floors
 abstract class Floor{
-    int current_capacity; //current no of vehicles in each floor
-    int max_capacity; // constant
-    int compact_4_wheelers;
-    int max_compact_4_wheelers;
+    int compact_4_wheelers; //current no of vehicles in each floor
+    int max_compact_4_wheelers;// constant
     int normal_4_wheelers;
-    int max_normal_4_wheelers;
+    int max_normal_4_wheelers;// constant
     int large_4_wheelers;
-    int max_large_4_wheelers;
+    int max_large_4_wheelers;// constant
     int two_wheelers;
-    int max_two_wheelers;
+    int max_two_wheelers;// constant
 
     abstract void display_board(); // displays the no of empty slots for parking in order of (total, 4w, 2w)
     abstract int exit(String Vehicle_type, String Vehicle_Number); // does all the functions when a vehicle exits
-    abstract int payment(Vehicle v); // gives price for parking
-    abstract void update(); // updates the counter of vehicle that exits/enters
 }
 
 class Ground_Floor extends Floor{
-    int current_capacity=0;
-    int max_capacity = 100;
     int handicapped_vehicles = 0;
     int max_handicapped_vehicles = 50;
     int EV_4_wheelers = 0;
@@ -181,6 +181,7 @@ class Ground_Floor extends Floor{
     boolean EV4Status[]=new boolean[30];
     boolean EV2Status[]=new boolean[20];
     
+	 // displays the no of empty slots for parking in order of (total, 4w, 2w)
     void display_board(){
        // System.out.println("Total Empty Slots: " + (max_capacity - current_capacity));
         System.out.println("No. of Handicapped slots available: " + (max_handicapped_vehicles - handicapped_vehicles));
@@ -202,8 +203,7 @@ class Ground_Floor extends Floor{
         }
         return false;
  
-    }
-    
+    }   
 // Checking wether there are empty slots in Handicapped Section
     boolean HandicappedChecking(){
         if(this.max_handicapped_vehicles>this.handicapped_vehicles){
@@ -212,8 +212,7 @@ class Ground_Floor extends Floor{
         return false;
 
     }
-
-	// returning empty slot positiion
+// returning empty slot position if present
     int EV4PlaceChecking(){
         for(int i=0;i<30;i++){
             if(this.EV4Status[i]==false) {
@@ -223,8 +222,7 @@ class Ground_Floor extends Floor{
         }
         return -1;
     }
-    
-	// returning empty slot positiion
+// returning empty slot position if present
     int EV2PlaceChecking(){
         for(int i=0;i<20;i++){
             if(this.EV2Status[i]==false) {
@@ -234,8 +232,7 @@ class Ground_Floor extends Floor{
         }
         return -1;
     }
-    
-	// returning empty slot positiion
+// returning empty slot position if present
     int handicappedPlaceChecking(){
         for(int i=0;i<50;i++){
             if(this.handicappedStatus[i]==false){
@@ -246,22 +243,24 @@ class Ground_Floor extends Floor{
         return -1;
     }
 	
+// this method scans entry ticket and gives you price and payment options
+// also updates capactiy of building 
     public int exit(String Vehicle_type, String Vehicle_number){
-    	SimpleDateFormat outtime = new SimpleDateFormat("yyyy.MM.dd G HH:mm:ss");
+    	SimpleDateFormat outtime = new SimpleDateFormat("yyyy.MM.dd G HH:mm:ss"); // Gets the time at exit
     	Date dateout=new Date();
     	outtime.setTimeZone(TimeZone.getTimeZone("IST"));
     	long timeout =dateout.getTime();
-    	//this.current_capacity--;
-        int i;
-        int totalPrice=0;
-	    //  int EV_Charge(String VehicleNumber,boolean ChargeRequired)
+        int i; 
+        int totalPrice=0; // price gets updated in this varaible at every stage
+	    
         if(Vehicle_type.equals("EV2W") ) {
         	for(i=0;i< 20; i++) {
-        		if(EV_2_Wheelers_array[i].VehicleNumber.equals(Vehicle_number)) {
+        		if(EV_2_Wheelers_array[i].VehicleNumber.equals(Vehicle_number)) { // Checking position of object in the array of EV2W in ground floor
         			break;
         		}
         	}
-        	this.EV_2_wheelers--;
+		// updating total number of EV2W and it's position
+        	this.EV_2_wheelers--; 
         	EV2Status[i]=false;
         	
         	long intime = EV_2_Wheelers_array[i].datein.getTime();
@@ -269,13 +268,14 @@ class Ground_Floor extends Floor{
         	float durationinhours =(float)duration/3600;
         	float rate=20;
         	
+		// Updating price according to time of entry and exit
         	if(durationinhours <= 1) {
         		totalPrice= (int)rate + EV.EV_Charge(EV_2_Wheelers_array[i].VehicleNumber,true,3);} // 3 is number of Watts of charge used by Vehicle
         	else {
         	    rate=20+((durationinhours-1)*10);
         	    totalPrice= (int)rate+EV.EV_Charge(EV_2_Wheelers_array[i].VehicleNumber,true,3); // 3 is number of Watts of charge used by Vehicle
         	}
-    		File Data = new File("Data.txt");
+    		File Data = new File("Data.txt"); // enetering values to a file to store data
     		try {
     			Data.createNewFile();
     			FileWriter Fwriter = new FileWriter(Data,true);
@@ -283,24 +283,29 @@ class Ground_Floor extends Floor{
     			Fwriter.close();
     		}catch(IOException e) {}
         }
+	   
         else if(Vehicle_type.equals("EV4W") ) {
         	for(i=0;i< 30; i++) {
-        		if(EV_4_Wheelers_array[i].VehicleNumber.equals(Vehicle_number)) {
+        		if(EV_4_Wheelers_array[i].VehicleNumber.equals(Vehicle_number)) { // Checking position of object in the array of EV4W in ground floor
         			break;
         		}
         	}
+		
+		// updating total number of EV4W and it's position
         	this.EV_4_wheelers--;
         	EV4Status[i]=false;
         	long intime = EV_4_Wheelers_array[i].datein.getTime();
         	long duration = (timeout - intime)/1000 ;
         	float durationinhours =(float)duration/3600;
         	float rate=20;
-        	if(durationinhours <= 1) {totalPrice= (int)rate+EV.EV_Charge(EV_4_Wheelers_array[i].VehicleNumber,true,3);}
+		
+		// Updating price according to time of entry and exit
+        	if(durationinhours <= 1) {totalPrice= (int)rate+EV.EV_Charge(EV_4_Wheelers_array[i].VehicleNumber,true,3);} // 3 is number of Watts of charge used by Vehicle
         	else {
         	    rate=20+((durationinhours-1)*10);
         	    totalPrice= (int)rate+EV.EV_Charge(EV_4_Wheelers_array[i].VehicleNumber,true,3); // 3 is number of Watts of charge used by Vehicle
         	}
-    		File Data = new File("Data.txt");
+    		File Data = new File("Data.txt"); // enetering values to a file to store data
     		try {
     			Data.createNewFile();
     			FileWriter Fwriter = new FileWriter(Data,true);
@@ -310,22 +315,26 @@ class Ground_Floor extends Floor{
         }
         else if(Vehicle_type.equals("h") ) {
         	for(i=0;i< 50; i++) {
-        		if(Handicapped_array[i].VehicleNumber.equals(Vehicle_number)) {
+        		if(Handicapped_array[i].VehicleNumber.equals(Vehicle_number)) { // Checking position of object in the array of Handicapped in ground floor
         			break;
         		}
         	}
+		
+		// updating total number of Handicapped and it's position
         	this.handicapped_vehicles--;
         	handicappedStatus[i]=false;
         	long intime = Handicapped_array[i].datein.getTime();
         	long duration = (timeout - intime)/1000 ;
         	float durationinhours =(float)duration/3600;
         	float rate=20;
+		
+		// Updating price according to time of entry and exit
         	if(durationinhours <= 1) {totalPrice =  (int)rate;}
         	else {
         	    rate=20+((durationinhours-1)*10);
         	    totalPrice= (int)rate;
         	}
-    		File Data = new File("Data.txt");
+    		File Data = new File("Data.txt"); // enetering values to a file to store data
     		try {
     			Data.createNewFile();
     			FileWriter Fwriter = new FileWriter(Data,true);
@@ -335,10 +344,6 @@ class Ground_Floor extends Floor{
         }
         return totalPrice;
     }
-    int payment(Vehicle v){
-        return 0;
-    }
-    void update(){}
 
     //Below are the arrays of a specfic vehicle representing the vehicles' slot in that floor
     EV_4_W[] EV_4_Wheelers_array = new EV_4_W[30];
@@ -428,6 +433,7 @@ class Normal_Floor extends Floor{
         System.out.println("Total Empty 2W Slots: " + (this.max_two_wheelers - this.two_wheelers));
     }
 
+	//Checks empty place for Compact vehicle in a particular floor 
     int compactPlaceChecking(){
         for(int i=0;i<25;i++){
             if(this.compact4WheelerStatus[i]==false){
@@ -438,6 +444,7 @@ class Normal_Floor extends Floor{
         return -1;
     }
     
+	//Checks empty place for Normal vehicle in a particular floor
     int normalPlaceChecking(){
         for(int i=0;i<35;i++){
             if(this.normal4WheelerStatus[i]==false){
@@ -448,6 +455,7 @@ class Normal_Floor extends Floor{
         return -1;
     }
 
+	//Checks empty place for Heavy vehicle in a particular floor
     int heavyPlaceChecking(){
         for(int i=0;i<25;i++){
             if(this.heavy4WheelerStatus[i]==false){
@@ -458,6 +466,7 @@ class Normal_Floor extends Floor{
         return -1;
     }
     
+	//Checks empty place for Two wheeler vehicle in a particular floor
     int twoWheelerPlaceChecking(){
         for(int i=0;i<25;i++){
             if(this.twoWheelerStatus[i]==false){
@@ -468,6 +477,9 @@ class Normal_Floor extends Floor{
         return -1;
     }
     
+	
+	// this method scans entry ticket and gives you price and payment options
+	// also updates capactiy of building 
     public int exit(String Vehicle_type, String Vehicle_number){
     	SimpleDateFormat outtime = new SimpleDateFormat("yyyy.MM.dd G HH:mm:ss");
     	Date dateout=new Date();
@@ -481,6 +493,9 @@ class Normal_Floor extends Floor{
         			break;
         		}
         	}
+		
+		
+		// updating total number of two wheeler and it's position
         	this.two_wheelers--;
         	twoWheelerStatus[i]=false;
         	long intime = two_Wheeler_array[i].datein.getTime();
@@ -488,12 +503,14 @@ class Normal_Floor extends Floor{
         	float durationinhours =(float)duration/3600;
         	float rate=20;
         	
+		
+		// Updating price according to time of entry and exit
 		if(durationinhours <= 1) {totalPrice = (int)rate;}
         	else {
         	    rate=20+((durationinhours-1)*10);
         	    totalPrice= (int)rate;
         	}
-			File Data = new File("Data.txt");
+			File Data = new File("Data.txt"); // enetering values to a file to store data
 			try {
 				Data.createNewFile();
 				FileWriter Fwriter = new FileWriter(Data,true);
@@ -508,18 +525,22 @@ class Normal_Floor extends Floor{
         			break;
         		}
         	}
+		
+		// updating total number of COMPACT four wheeler and it's position
         	this.compact_4_wheelers--;
         	compact4WheelerStatus[i]=false;
         	long intime = Compact_4_W_array[i].datein.getTime();
         	long duration = (timeout - intime)/1000 ;
         	float durationinhours =(float)duration/3600;
         	float rate=20;
+		
+		// Updating price according to time of entry and exit
         	if(durationinhours <= 1) {totalPrice= (int)rate;}
         	else {
         	    rate=20+((durationinhours-1)*10);
         	    totalPrice= (int)rate;
         	}
-    		File Data = new File("Data.txt");
+    		File Data = new File("Data.txt"); // enetering values to a file to stroe data
     		try {
     			Data.createNewFile();
     			FileWriter Fwriter = new FileWriter(Data,true);
@@ -533,18 +554,22 @@ class Normal_Floor extends Floor{
         			break;
         		}
         	}
+		
+		// updating total number of NORMAL four wheeler and it's position
         	this.normal_4_wheelers--;
         	normal4WheelerStatus[i]=false;
         	long intime = Normal_4_W_array[i].datein.getTime();
         	long duration = (timeout - intime)/1000 ;
         	float durationinhours =(float)duration/3600;
         	float rate=20;
+		
+		// Updating price according to time of entry and exit
         	if(durationinhours <= 1) {totalPrice = (int)rate;}
         	else {
         	    rate=20+((durationinhours-1)*10);
         	    totalPrice = (int)rate;
         	}
-    		File Data = new File("Data.txt");
+    		File Data = new File("Data.txt"); // enetering values to a file to stroe data
     		try {
     			Data.createNewFile();
     			FileWriter Fwriter = new FileWriter(Data,true);
@@ -558,18 +583,22 @@ class Normal_Floor extends Floor{
         			break;
         		}
         	}
+		
+		// updating total number of HEAVY four wheeler and it's position
         	this.heavy_4_wheelers--;
         	heavy4WheelerStatus[i]=false;
         	long intime = Heavy_4_W_array[i].datein.getTime();
         	long duration = (timeout - intime)/1000 ;
         	float durationinhours =(float)duration/3600;
         	float rate=20;
+		
+		// Updating price according to time of entry and exit
         	if(durationinhours <= 1) {totalPrice = (int)rate;}
         	else {
         	    rate=20+((durationinhours-1)*10);
         	    totalPrice = (int)rate;
         	}
-    		File Data = new File("Data.txt");
+    		File Data = new File("Data.txt"); // enetering values to a file to stroe data
     		try {
     			Data.createNewFile();
     			FileWriter Fwriter = new FileWriter(Data,true);
@@ -579,12 +608,6 @@ class Normal_Floor extends Floor{
         }
         return totalPrice;
     }
-    int payment(Vehicle v){
-        return 0;
-    };
-    void update(){};
-
-
 
     //Below are the arrays of a specific vehicle representing the vehicles' slot in that floor
     Two_Wheeler[] two_Wheeler_array = new Two_Wheeler[30];
@@ -611,14 +634,13 @@ class Normal_Floor extends Floor{
         Heavy_4_W_array[heavyPlaceChecking()] = new Heavy_4_W(Vehicle_Type, Vehicle_Number, EV, chargeRequired, false,intime);
         this.heavy_4_wheelers++;
     }
-
-    
+   
 }
 
-
+// This class contains all methods for entrance of a vehicle
 class Entry {
 
-
+//Method used to note the details of vehicle entered
     public static void entry(Ground_Floor ground, Normal_Floor f1, Normal_Floor f2, Normal_Floor f3, Normal_Floor f4, Normal_Floor f5) {
 
         //Info we take during a vehicle entry
@@ -627,19 +649,17 @@ class Entry {
         boolean EV;
         boolean chargeRequired;
         boolean Handicapped;
-        
-
 
         //Taking user input. 
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Welcome to IIT-TP Parking");
-		System.out.print("Please provide the following information:\n1. Enter Vehicle Number:");
+		System.out.println("Please provide the following information:\n1. Enter Vehicle Number:");
 		
         Vehicle_Number=sc.next(); //Input Vehicle_Number as a String
 
 		System.out.println("What is your Vehicle Type?(enter choice number)\n1. 2-Wheeler.\n2. 4-wheeler Compact.\n3. 4-wheeler normal\n4. 4-wheeler heavy");
 		
-        int check=0;
+        int check=0; // flag used to check whether optin is valid or not
 
         //While loop until we get a valid option from user
 		while(check==0) {			
@@ -651,47 +671,46 @@ class Entry {
 			else check = 1; //Terminates while loop once we have our valid option
 		}
 		
-
-//		if(Vehicle_type==2) {
-//			if(checkAvailability.checkAvailabilityCompact(f1.compactChecking(),f2.compactChecking(),f3.compactChecking(),f4.compactChecking(),f5.compactChecking())) {
-//				
-//			}
-//			else {
-//				return;
-//			}
-//		}
-//		
-//		if(Vehicle_type==3) {
-//			if(checkAvailability.checkAvailabilityNormal(f1.normalChecking(),f2.normalChecking(),f3.normalChecking(),f4.normalChecking(),f5.normalChecking())) {
-//				
-//			}
-//			else {
-//				return;
-//			}
-//		}
-//		
-//		if(Vehicle_type==4) {
-//			if(checkAvailability.checkAvailabilityHeavy(f1.heavyChecking(),f2.heavyChecking(),f3.heavyChecking(),f4.heavyChecking(),f5.heavyChecking())) {
-//				
-//			}
-//			else {
-//				return;
-//			}
-//		}
+// Stops the entry if accomodation is full
+		if(Vehicle_type==2) {
+			if(checkAvailability.checkAvailabilityCompact(f1.compactChecking(),f2.compactChecking(),f3.compactChecking(),f4.compactChecking(),f5.compactChecking())) 				
+			}
+			else {
+				return;
+			}
+		}
+		
+		else if(Vehicle_type==3) {
+			if(checkAvailability.checkAvailabilityNormal(f1.normalChecking(),f2.normalChecking(),f3.normalChecking(),f4.normalChecking(),f5.normalChecking())) {
+				
+			}
+			else {
+				return;
+			}
+		}
+		
+		else if(Vehicle_type==4) {
+			if(checkAvailability.checkAvailabilityHeavy(f1.heavyChecking(),f2.heavyChecking(),f3.heavyChecking(),f4.heavyChecking(),f5.heavyChecking())) {
+				
+			}
+			else {
+				return;
+			}
+		}
 
 		System.out.print("2. If the vehicle is EV? (Enter true) else (Enter false)");
-		EV = sc.nextBoolean();
+		EV = sc.nextBoolean(); // Whether EV or not
 
 
 		if(EV) {
-			System.out.println("2.1 Do you require charging?" );
+			System.out.println("2.1 Do you require charging?" ); // Takes input of charging required
 			chargeRequired = sc.nextBoolean();
 		}
         else chargeRequired = false;
 
 
 		System.out.println("3. Handicapped? (Enter true or false)");
-		Handicapped = sc.nextBoolean();	
+		Handicapped = sc.nextBoolean();	//Whether Handicapped or not
 		
 
 		
@@ -707,11 +726,16 @@ class Entry {
         SimpleDateFormat sd1= new SimpleDateFormat("yyyy.MM.dd G HH:mm:ss");
         Date date = new Date();
         sd1.setTimeZone(TimeZone.getTimeZone("IST"));
-        //with all the info we have about the entered vehicle
-        //We now decide which floor the Vehicle may go to
-        // If (EV and chargeRequired) or Handicapped  only in ground floor
-        // Else take user's choice and update floor data
-        int floor=0;
+        
+	//with all the info we have about the entered vehicle
+        
+	//We now decide which floor the Vehicle may go to
+        
+	// If (EV and chargeRequired) or Handicapped  only in ground floor
+        
+	// Else take user's choice and update floor data
+        
+	int floor=0; // we get floor of vehicle if it's not EV nor Handicapped and store in this variable
         if(chargeRequired && (Vehicle_type==4 || Vehicle_type==2 || Vehicle_type==3)){
             ground.ObjectCreation_for_EV_4_W(Vehicle_Number, chargeRequired,sd1);
         }
@@ -742,8 +766,6 @@ class Entry {
         
     }
 
-    
-
 	//To avoid multiple lines in above 10 lines. Wrote a normal function and called it whenever necessary
     //Just created object in the array of particular vehicle in the particular floor
     public static void ObjectCreation(Normal_Floor f,int Vehicle_type,String Vehicle_Type, String Vehicle_Number, boolean EV, boolean chargeRequired, SimpleDateFormat sd1){
@@ -752,7 +774,6 @@ class Entry {
         else if(Vehicle_type==3) f.ObjectCreation_for_Normal_4_W(Vehicle_Type, Vehicle_Number, EV, chargeRequired,sd1);
         else if(Vehicle_type==4) f.ObjectCreation_for_Heavy_4_W(Vehicle_Type, Vehicle_Number, EV, chargeRequired,sd1);
     }
-
 
     //method that converts int Vehicle_type to String Vehicle_Type for storage in respective Vehicle object
     public static String give_Vehicle_Type(int Vehicle_type){
@@ -778,13 +799,10 @@ class Entry {
         System.out.println("-----  Floor ("+5+")   -----"); // prints the floor number
         f5.display_board(); // its data
 
-
-        System.out.print("From sensor at entry\nWhich Floor?\n");
+        System.out.print("From sensor at entry\nWhich Floor?\n"); // Sensor input saying vehicle entered which floor 
         floor = sc.nextInt();
         return floor;
     }
-
-
 
     //Prints ticket with all the info when the vehicle enters
 	static void PrintTicket(String Vehicle_Number,int Vehicle_type, boolean EV, boolean chargeRequired, boolean Handicapped) {
@@ -792,12 +810,10 @@ class Entry {
         System.out.println("|------IIT-TP PARKING------|");
 		System.out.print("Vehicle Number:"+Vehicle_Number);
 
-
 		if(Vehicle_type==1) System.out.print("\n 2-wheeler");
 		else if(Vehicle_type==2)System.out.print("\n 4-wheeler compact");
 		else if(Vehicle_type==3)System.out.print("\n 4-wheeler normal");
 		else if(Vehicle_type==4)System.out.print("\n 4-wheeler heavy");
-
 
 		System.out.println("\nEV:"+EV+"\nEV charging:"+chargeRequired+"\nHandicapped:"+Handicapped);
 
@@ -809,20 +825,26 @@ class Entry {
 	}
 }
 
+// Exit class contains methods to make exit of vehicles 
 class Exit {
 	
+	// Method used update vehicle position and floor capacity
 	public static void exit(Ground_Floor ground, Normal_Floor f1, Normal_Floor f2, Normal_Floor f3, Normal_Floor f4, Normal_Floor f5) {
-		int floor;
+		int floor,price=0;
 		String Vehicle_Type, Vehicle_Number;
 		Scanner sc= new Scanner(System.in);
+		
 		System.out.print("Enter floor:");
-		floor = sc.nextInt();
+		floor = sc.nextInt(); // Taking floor input from a sensor
 		sc.nextLine();
-		int price=0;
+		
 		System.out.print("Enter Vehicle Type:");
-		Vehicle_Type = sc.nextLine();
+		Vehicle_Type = sc.nextLine(); // Taking Vehicle type form user
+		
 		System.out.print("\nEnter Vehicle Number:");
-		Vehicle_Number=sc.nextLine();
+		Vehicle_Number=sc.nextLine(); // Taking Vehcle Number from user
+		
+		// Since, each floor has it's own exit, we take floor as an input from sensor above activate it's exit function
 		if(floor==0) {
 			price = ground.exit(Vehicle_Type, Vehicle_Number);
 			System.out.println(price);
@@ -847,23 +869,30 @@ class Exit {
 			price = f5.exit(Vehicle_Type, Vehicle_Number);
 			System.out.println(price);
 		}
+		
 		int pay=0,GivenCash=0;
-		boolean flag=true;
+		boolean flag=true; // flag is a boolean to make sure that payment is done
+		
 		while(flag){
 			System.out.println( "If you want to pay in CASH (PRESS 1) or CARD (PRESS 2) or UPI (PRESS 3)");
 			pay=sc.nextInt();
-			if(pay==1) {
+			// Cash method
+			if(pay==1) { 
 				System.out.println("How much cash given in rupees: ");
 				GivenCash=sc.nextInt();
-				if(GivenCash>=price) {
+				if(GivenCash>=price) { // If cash given is less than price we ask them to try again
 					System.out.println("Return: "+ (GivenCash-price));
 					flag=false;
 				}	
+				else{
+					System.out.println("Please give correct amount");	
+				}
 			}
+			// Credit Card method
 			else if(pay==2){
 				System.out.println("Scan your card here");
-				GivenCash=sc.nextInt();
-				if(GivenCash==price){
+				GivenCash=sc.nextInt(); // Input from bank servers
+				if(GivenCash==price){ //For card to be payment method amount of money given should be tallyed to price of the ticket
 					System.out.println("Your TRANSACTION is SUCEESFUL");
 					flag=false;
 				}
@@ -871,10 +900,11 @@ class Exit {
 					System.out.println("Your TRANSACTION has DECLINED\nPlease try again");
 				}
 			}
+			// UPI method
 			else if(pay==3){
 				System.out.println("Scan this QR code");
-				GivenCash=sc.nextInt();
-				if(GivenCash==price){
+				GivenCash=sc.nextInt(); // Input from server of UPI's  
+				if(GivenCash==price){ //For UPI to be payment method amount of money given should be tallyed to price of the ticket
 					System.out.println("Your TRANSACTION is SUCEESFUL");
 					flag=false;
 				}
@@ -885,12 +915,10 @@ class Exit {
 		}
 		System.out.println("Thanks for Coming to our parking lot");
 	}
-		
 	
 }
 
 public class Parking {
-	
 
     public static void main(String[] args){
     	Scanner sc = new Scanner(System.in);
@@ -904,10 +932,11 @@ public class Parking {
         //we FileWriter class to append data to the file
 		File Data = new File("Data.txt");
 		try {
-			Data.createNewFile();
-			FileWriter Fwriter = new FileWriter(Data,true);
-			Fwriter.write("Vehicle Number     Vehicle Type     EV Charge reqiured     Handicapped     Rate\n");
-			Fwriter.close();
+			if(Data.createNewFile()){
+				FileWriter Fwriter = new FileWriter(Data,true);
+				Fwriter.write("Vehicle Number     Vehicle Type     EV Charge reqiured     Handicapped     Rate\n");
+				Fwriter.close();
+			}
 		}catch(IOException e) {}
         
         //clock object for storing time
@@ -924,9 +953,6 @@ public class Parking {
 
         // object for ground floor
         Ground_Floor ground = new Ground_Floor();
-
-        
-
 
         //For object calling inside the entry() method
         //Declared in main and used in entry to avoid override of things
@@ -959,22 +985,15 @@ public class Parking {
         	default :
         		System.out.println("Invalid choice!!! Please make a valid choice. \n\n");
         	}
-        	
         }
-
         //To check if its working
- 
         //Successfully completed
-
-        
-        
-
     }
 }
 
 // Credits : Group 10 
-// 1.Chetan Moturi CS21B017
-// 2.A shree Balaji CS21B008
-// 3.Teja manchikatla CS21B031
-// 4.KE Nanda Kishore CS21B025
-// 5 Andaluri SPVM Aditya CS21B0021
+// 1.Teja Manchikatla CS21B031
+// 2.Chetan Moturi CS21B017
+// 3.A Shree Balaji CS21B008
+// 4.K.E.Nanda Kishore CS21B025
+// 5. Andaluri SPVM Aditya CS21B021
