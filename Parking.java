@@ -657,7 +657,7 @@ class Entry {
 		
 // Following if else ladder stops the entry method if accomodation is full
 		if(Vehicle_type==2) {
-			if(checkAvailability.checkAvailabilityCompact(f1.compactChecking(),f2.compactChecking(),f3.compactChecking(),f4.compactChecking(),f5.compactChecking())) 				
+			if(checkAvailability.checkAvailabilityCompact(f1.compactChecking(),f2.compactChecking(),f3.compactChecking(),f4.compactChecking(),f5.compactChecking())){ 				
 			}
 			else {
 				return;
