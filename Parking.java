@@ -127,7 +127,6 @@ class Handicapped extends Vehicle{
 }
 
 // This is the class used to store details of a EV(normal, compact, heavy) four wheeler vehicle
-
 class EV_4_W extends Vehicle{
 
     //Constructor
@@ -141,7 +140,6 @@ class EV_4_W extends Vehicle{
 }
 
 // This is the class used to store details of a EV TWO wheeler vehicle
-
 class EV_2_W extends Vehicle{
 
     //Constructor
@@ -153,7 +151,6 @@ class EV_2_W extends Vehicle{
         this.Handicapped = Handicapped;
     }
 }
-
 // Abstract class Floor extending to each floor
 // Contains all common details between floors
 abstract class Floor{
@@ -170,6 +167,7 @@ abstract class Floor{
     abstract int exit(String Vehicle_type, String Vehicle_Number); // does all the functions when a vehicle exits
 }
 
+// contains all the contents of ground floor of the building
 class Ground_Floor extends Floor{
     int handicapped_vehicles = 0;
     int max_handicapped_vehicles = 50;
@@ -183,7 +181,6 @@ class Ground_Floor extends Floor{
     
 	 // displays the no of empty slots for parking in order of (total, 4w, 2w)
     void display_board(){
-       // System.out.println("Total Empty Slots: " + (max_capacity - current_capacity));
         System.out.println("No. of Handicapped slots available: " + (max_handicapped_vehicles - handicapped_vehicles));
         System.out.println("No. of 4W EV slots available: " + (max_EV_4_Wheelers-EV_4_wheelers));
         System.out.println("No. of 2W EV slots available: " + (max_EV_2_Wheelers-EV_2_wheelers));
@@ -390,9 +387,6 @@ class Normal_Floor extends Floor{
         if(this.max_compact_4_wheelers>this.compact_4_wheelers){
             return true;
         }
-        // else if(NormalChecking()){
-        //     return true;
-        // }
         return false;
     }
     // Checking wether there are empty slots in Large_4_Wheelers Section
@@ -407,9 +401,6 @@ class Normal_Floor extends Floor{
         if(this.max_normal_4_wheelers>this.normal_4_wheelers){
             return true;
         }
-        // else if(LargeChecking()){
-        //     return true;
-        // }
         return false;
     }
     // Checking wether there are empty slots in 2_Wheelers Section
@@ -417,9 +408,6 @@ class Normal_Floor extends Floor{
         if(this.max_two_wheelers>this.two_wheelers){
             return true;
         }
-        // else if(CompactChecking()){
-        //     return true;
-        // }
         return false;
     }
 
@@ -494,7 +482,6 @@ class Normal_Floor extends Floor{
         		}
         	}
 		
-		
 		// updating total number of two wheeler and it's position
         	this.two_wheelers--;
         	twoWheelerStatus[i]=false;
@@ -503,7 +490,6 @@ class Normal_Floor extends Floor{
         	float durationinhours =(float)duration/3600;
         	float rate=20;
         	
-		
 		// Updating price according to time of entry and exit
 		if(durationinhours <= 1) {totalPrice = (int)rate;}
         	else {
@@ -517,7 +503,6 @@ class Normal_Floor extends Floor{
 				Fwriter.write("  "+two_Wheeler_array[i].VehicleNumber+"          2-Wheeler                 no                no               "+totalPrice+"\n");
 				Fwriter.close();
 			}catch(IOException e) {}
-        	
         }
         else if(Vehicle_type.equals("C4W") ) {
         	for(i=0;i< 25; i++) {
@@ -615,7 +600,6 @@ class Normal_Floor extends Floor{
     Normal_4_W[] Normal_4_W_array = new Normal_4_W[35];
     Heavy_4_W[] Heavy_4_W_array = new Heavy_4_W[10];
 
-
     //Below functions are called in Entry class when we know the Vehicle Type that entered
     //The functions below create an object of that vehicle to store in its respective array of vehicles
     void ObjectCreation_for_Two_Wheeler(String Vehicle_Type, String Vehicle_Number,boolean EV, boolean chargeRequired,SimpleDateFormat intime){
@@ -671,7 +655,7 @@ class Entry {
 			else check = 1; //Terminates while loop once we have our valid option
 		}
 		
-// Stops the entry if accomodation is full
+// Following if else ladder stops the entry method if accomodation is full
 		if(Vehicle_type==2) {
 			if(checkAvailability.checkAvailabilityCompact(f1.compactChecking(),f2.compactChecking(),f3.compactChecking(),f4.compactChecking(),f5.compactChecking())) 				
 			}
@@ -703,7 +687,7 @@ class Entry {
 
 
 		if(EV) {
-			System.out.println("2.1 Do you require charging?" ); // Takes input of charging required
+			System.out.println("2.1 Do you require charging?" ); // Takes input for charging required or not
 			chargeRequired = sc.nextBoolean();
 		}
         else chargeRequired = false;
@@ -711,11 +695,6 @@ class Entry {
 
 		System.out.println("3. Handicapped? (Enter true or false)");
 		Handicapped = sc.nextBoolean();	//Whether Handicapped or not
-		
-
-		
-		
-		
 
         //Ticket printed is displayed
         PrintTicket(Vehicle_Number,Vehicle_type, EV, chargeRequired, Handicapped);
@@ -783,7 +762,7 @@ class Entry {
         return "Heavy 4 Wheeler";
     }
 
-    //Showing user about the data of each floor and asking in which floor he(Yes 'he'. Women should stay in kitchen) would like to park
+    //Showing user about the data of each floor and asking in which floor his/her vehicle would like to be parked
 	public static int forfloors(Normal_Floor f1, Normal_Floor f2, Normal_Floor f3, Normal_Floor f4, Normal_Floor f5){
         int floor;
         Scanner sc  = new Scanner(System.in);
@@ -870,7 +849,7 @@ class Exit {
 			System.out.println(price);
 		}
 		
-		int pay=0,GivenCash=0;
+		int pay=0,GivenCash=0; // 'pay' is for which type of payment method used by user to pay
 		boolean flag=true; // flag is a boolean to make sure that payment is done
 		
 		while(flag){
@@ -986,8 +965,6 @@ public class Parking {
         		System.out.println("Invalid choice!!! Please make a valid choice. \n\n");
         	}
         }
-        //To check if its working
-        //Successfully completed
     }
 }
 
